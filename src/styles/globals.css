@@ -55,9 +55,25 @@ a {
   font-weight: 1000;
 }
 
+.home-slider {
+  height: 85dvh;
+}
+
+@keyframes mymove {
+  0% {
+    scale: 100%;
+  }
+
+  100% {
+    scale: 110%;
+  }
+}
+.home-slider .swiper-slide-active {
+  animation: mymove 5.5s;
+}
 .home-slider img {
   position: relative;
-  right: 1px;
+  object-fit: cover;
 }
 
 .gallery-slider .swiper-button-prev:after,

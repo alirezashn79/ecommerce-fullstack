@@ -1,11 +1,18 @@
 import Navbar from "@/components/modules/navbar";
+import Articles from "@/components/templates/index/articles/Articles";
+import Banner from "@/components/templates/index/banner";
+import LatestProducts from "@/components/templates/index/latest-products";
+import Promote from "@/components/templates/index/promote/Promote";
 import React from "react";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <div style={{ color: "black", height: "4000px" }}>Coffee Template</div>
+      <Banner />
+      <LatestProducts />
+      <Promote />
+      <Articles />
     </>
   );
 }
