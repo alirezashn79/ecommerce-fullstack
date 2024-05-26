@@ -1,14 +1,17 @@
-import React from "react";
-import styles from "./Navbar.module.css";
+"use client";
+
 import Link from "next/link";
-import { IoIosArrowDown } from "react-icons/io";
-import { FaRegHeart } from "react-icons/fa";
-import { LuShoppingCart } from "react-icons/lu";
+import styles from "./Navbar.module.css";
+import { useWindowScroll } from "@uidotdev/usehooks";
 import Image from "next/image";
+import { FaRegHeart } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuShoppingCart } from "react-icons/lu";
 
 function Navbar() {
+  const [{ y }] = useWindowScroll();
   return (
-    <nav className={styles.navbar}>
+    <nav className={!y || y < 120 ? styles.navbar : styles.navbar_fixed}>
       <main>
         <div>
           <Link href="/">
