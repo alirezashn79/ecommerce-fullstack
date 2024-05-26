@@ -60,7 +60,7 @@
   list-style: none;
   font-size: 14px;
   font-weight: 500;
-  font-family: "shabnam", Arial, Helvetica, sans-serif;
+  /* font-family: "shabnam", Arial, Helvetica, sans-serif; */
   color: rgb(52, 24, 14);
   white-space: nowrap;
 }
@@ -91,7 +91,7 @@
   font-size: 13px;
   font-weight: 500;
   padding-bottom: 0.5rem;
-  font-family: "shabnam", Arial, Helvetica, sans-serif;
+  /* font-family: "shabnam", Arial, Helvetica, sans-serif; */
 }
 .dropdown a {
   display: flex;

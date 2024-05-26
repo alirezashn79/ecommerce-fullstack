@@ -11,7 +11,7 @@
   flex-direction: row-reverse;
 }
 .main section {
-  font-family: shabnam;
+  /* font-family: shabnam; */
   color: black;
   width: 50%;
 }
@@ -80,7 +80,7 @@
   margin-top: 2rem;
   color: black;
   background: white;
-  font-family: shabnam;
+  /* font-family: shabnam; */
 }
 .why_coffee p:nth-child(3) {
   margin-top: 1rem;

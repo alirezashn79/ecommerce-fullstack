@@ -3,7 +3,16 @@ import localFont from "next/font/local";
 import "../styles/globals.css";
 import AosInit from "@/utils/aos";
 const shabnamFont = localFont({
-  src: "../../public/fonts/shabnam/Shabnam-Medium.woff2",
+  src: [
+    {
+      path: "../../public/fonts/shabnam/Shabnam-Medium.woff2",
+      weight: "normal",
+    },
+    {
+      path: "../../public/fonts/shabnam/Shabnam-Bold.woff2",
+      weight: "bold",
+    },
+  ],
   display: "swap",
 });
 
