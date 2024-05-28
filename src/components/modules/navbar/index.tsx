@@ -11,7 +11,7 @@ import { LuShoppingCart } from "react-icons/lu";
 function Navbar() {
   const [{ y }] = useWindowScroll();
   return (
-    <nav className={!y || y < 120 ? styles.navbar : styles.navbar_fixed}>
+    <nav className={!y || y < 85 ? styles.navbar : styles.navbar_fixed}>
       <main>
         <div>
           <Link href="/">

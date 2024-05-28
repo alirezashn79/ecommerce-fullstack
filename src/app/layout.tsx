@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../styles/globals.css";
 import AosInit from "@/utils/aos";
+import ScrollToTop from "@/utils/Scroll-to-top";
 const shabnamFont = localFont({
   src: [
     {
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className={shabnamFont.className}>
         <AosInit />
         {children}
+        <ScrollToTop />
       </body>
     </html>
   );
