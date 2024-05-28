@@ -7,7 +7,6 @@
 .descriptions {
   width: 300px;
   padding: 10px;
-  font-family: shabnam;
   font-size: 15px;
   direction: rtl;
 }
@@ -38,7 +37,6 @@
   padding-top: 0.5rem;
 }
 .footer_article {
-  font-family: shabnam;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -56,7 +54,6 @@
 .links li {
   list-style: none;
   margin-top: 10px;
-  font-family: shabnam;
   color: rgba(255, 255, 255, 0.5);
 }
 .links {
@@ -78,7 +75,6 @@
   grid-template-columns: auto auto;
 }
 .copyRight {
-  font-family: shabnam;
   direction: rtl;
   padding: 20px 0px;
   font-size: 12px;
