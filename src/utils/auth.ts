@@ -11,7 +11,7 @@ export async function verifyPassword(password: string, hashedPassword: string) {
   return isVerify;
 }
 
-export function generateAccessToken(data: object) {
+export function generateAccessToken(data: { name: string; phone: string }) {
   const accessToken = sign(
     { ...data },
     process.env.ACCESS_TOKEN_SECRET_KEY as string,
@@ -23,7 +23,7 @@ export function generateAccessToken(data: object) {
   return accessToken;
 }
 
-export function generateRefreshToken(data: object) {
+export function generateRefreshToken(data: { email: string }) {
   const refreshToken = sign(
     { ...data },
     process.env.REFRESH_TOKEN_SECRET_KEY as string,
@@ -35,7 +35,7 @@ export function generateRefreshToken(data: object) {
   return refreshToken;
 }
 
-export function verifyToken(token: string) {
+export function verifyAccessToken(token: string) {
   try {
     const tokenPayload = verify(
       token,
@@ -43,6 +43,7 @@ export function verifyToken(token: string) {
     );
     return tokenPayload;
   } catch (error) {
+    console.log("verify access token error...!", error);
     return false;
   }
 }

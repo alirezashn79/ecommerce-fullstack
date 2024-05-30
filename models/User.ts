@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 import { TUser } from "types/auth";
 
 const userSchema = new Schema<TUser>(
@@ -26,6 +26,6 @@ const userSchema = new Schema<TUser>(
     timestamps: true,
   }
 );
-const userModel = models.User || model("User", userSchema);
+const userModel = models.User || model<TUser>("User", userSchema);
 
 export default userModel;
