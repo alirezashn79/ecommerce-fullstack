@@ -13,9 +13,9 @@ export async function POST(req: Request) {
       await userSchema.validate(body, {
         abortEarly: false,
       });
-    } catch (error) {
+    } catch (err) {
       return Response.json(
-        { message: "invalid data...!", error },
+        { message: "invalid data...!", errorFields: err.inner },
         {
           status: 400,
         }
