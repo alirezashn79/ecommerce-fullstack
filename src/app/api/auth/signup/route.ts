@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     // create user
     await userModel.create({
       name: body.name,
-      email: body.email,
+      email: body?.email || undefined,
       phone: body.phone,
       password: hashedPassword,
       role: users.length > 0 ? "USER" : "ADMIN",

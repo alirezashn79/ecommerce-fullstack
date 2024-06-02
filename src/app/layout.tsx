@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "../styles/globals.css";
 import AosInit from "@/utils/aos";
 import ScrollToTop from "@/utils/Scroll-to-top";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/globals.css";
 const shabnamFont = localFont({
   src: [
     {
@@ -36,6 +38,7 @@ export default function RootLayout({
         <AosInit />
         {children}
         <ScrollToTop />
+        <ToastContainer position="top-center" theme="dark" />
       </body>
     </html>
   );

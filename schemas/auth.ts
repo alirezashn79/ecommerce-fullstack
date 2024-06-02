@@ -3,15 +3,14 @@ import { object, string } from "yup";
 export const userSchema = object({
   name: string().min(6).required(),
   email: string()
-    .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, "email is not valid")
+    .matches(/^$|[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, "email is not valid")
     .optional(),
   password: string()
-    .min(8)
     .matches(
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
       "password is not valid"
     )
-    .optional(),
+    .required(),
   phone: string()
     .matches(
       /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
