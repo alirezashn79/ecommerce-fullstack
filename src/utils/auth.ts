@@ -11,7 +11,11 @@ export async function verifyPassword(password: string, hashedPassword: string) {
   return isVerify;
 }
 
-export function generateAccessToken(data: { name: string; phone: string }) {
+export function generateAccessToken(data: {
+  name?: string;
+  phone?: string;
+  email?: string;
+}) {
   const accessToken = sign(
     { ...data },
     process.env.ACCESS_TOKEN_SECRET_KEY as string,

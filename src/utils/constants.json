@@ -1,6 +1,0 @@
-{
-  "authTypes": {
-    "LOGIN": "login",
-    "REGISTER": "register"
-  }
-}

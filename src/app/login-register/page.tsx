@@ -1,8 +1,7 @@
 "use client";
 
 import styles from "@/styles/login-register.module.css";
-// import { authTypes } from "@/utils/constants";
-import { authTypes } from "@/utils/constants.json";
+import { authTypes } from "@/utils/constants";
 import { useState } from "react";
 
 import Login from "@/components/templates/login-register/Login";
