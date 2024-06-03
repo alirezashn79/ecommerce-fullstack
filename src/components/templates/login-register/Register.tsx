@@ -8,6 +8,8 @@ import { userSchema } from "schemas/auth";
 import { TUserCreate } from "types/auth";
 import styles from "./register.module.css";
 import Sms from "./Sms";
+import { valiadteEmail } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 interface IRegister {
   showloginForm: () => void;
@@ -19,10 +21,12 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
   const [isRegisterWithPass, setIsRegisterWithPass] = useState(false);
 
   // hooks
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<TUserCreate>({
     mode: "all",
@@ -36,11 +40,18 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
   });
 
   // handlers
-  const onSignUp: SubmitHandler<TUserCreate> = async (values) => {
+  const onSignUpWithEmail: SubmitHandler<TUserCreate> = async (values) => {
+    if (!values.email || !valiadteEmail(values.email)) {
+      setError("email", {
+        message: "email is a required field",
+      });
+      return;
+    }
     try {
       const res = await axios.post("/api/auth/signup", values);
       toast.success(res.data.message);
       reset();
+      router.replace("/");
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
@@ -88,7 +99,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
           {...register("email")}
           className={styles.input}
           type="email"
-          placeholder="ایمیل (دلخواه)"
+          placeholder={isRegisterWithPass ? "ایمیل (اجباری)" : "ایمیل (دلخواه)"}
         />
         {errors.email && (
           <span
@@ -113,16 +124,20 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
           </span>
         )}
 
-        <p
-          onClick={() => setIsShowOtp(true)}
-          style={{ marginTop: "1rem" }}
-          className={styles.btn}
-        >
-          ثبت نام با کد تایید
-        </p>
+        {!isRegisterWithPass && (
+          <p
+            onClick={() => setIsShowOtp(true)}
+            style={{ marginTop: "1rem" }}
+            className={styles.btn}
+          >
+            ثبت نام با کد تایید
+          </p>
+        )}
         <button
           onClick={
-            isRegisterWithPass ? handleSubmit(onSignUp) : togglePassInput
+            isRegisterWithPass
+              ? handleSubmit(onSignUpWithEmail)
+              : togglePassInput
           }
           style={{ marginTop: ".7rem" }}
           className={styles.btn}

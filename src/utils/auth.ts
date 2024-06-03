@@ -1,5 +1,5 @@
 import { hash, compare } from "bcrypt-ts";
-import { sign, verify } from "jsonwebtoken";
+import { JwtPayload, sign, verify } from "jsonwebtoken";
 
 export async function hashPassword(password: string) {
   const hashedPassword = await hash(password, 10);
@@ -51,3 +51,19 @@ export function verifyAccessToken(token: string) {
     return false;
   }
 }
+
+export const valiadteEmail = (email: string) => {
+  const pattern = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/g;
+  return pattern.test(email);
+};
+
+export const valiadtePhone = (phone: string) => {
+  const pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g;
+  return pattern.test(phone);
+};
+
+// const valiadtePassword = (password) => {
+//   const pattern =
+//     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/g;
+//   return pattern.test(password);
+// };

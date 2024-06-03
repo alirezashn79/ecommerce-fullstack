@@ -1,14 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import styles from "./Navbar.module.css";
 import { useWindowScroll } from "@uidotdev/usehooks";
 import Image from "next/image";
+import Link from "next/link";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
+import styles from "./Navbar.module.css";
 
-function Navbar() {
+interface INavbarProps {
+  isLogin: {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+  } | null;
+}
+function Navbar({ isLogin }: INavbarProps) {
   const [{ y }] = useWindowScroll();
   return (
     <nav className={!y || y < 85 ? styles.navbar : styles.navbar_fixed}>
@@ -38,26 +47,26 @@ function Navbar() {
           <li>
             <Link href="/rules">قوانین</Link>
           </li>
-          {/* <li>
-            <Link href="/login-register">ورود / عضویت</Link>
-          </li> */}
 
-          {/* Start My-account section */}
-          <div className={styles.dropdown}>
-            <Link href="/p-user">
-              <IoIosArrowDown className={styles.dropdown_icons} />
-              حساب کاربری
-            </Link>
-            <div className={styles.dropdown_content}>
-              <Link href="/p-user/orders">سفارشات</Link>
-              <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
-              <Link href="/p-user/comments">کامنت‌ها</Link>
-              <Link href="/p-user/wishlist">علاقه‌مندی‌ها</Link>
-              <Link href="/p-user/account-details">جزئیات اکانت</Link>
+          {isLogin ? (
+            <div className={styles.dropdown}>
+              <Link href="/p-user">
+                <IoIosArrowDown className={styles.dropdown_icons} />
+                حساب کاربری
+              </Link>
+              <div className={styles.dropdown_content}>
+                <Link href="/p-user/orders">سفارشات</Link>
+                <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
+                <Link href="/p-user/comments">کامنت‌ها</Link>
+                <Link href="/p-user/wishlist">علاقه‌مندی‌ها</Link>
+                <Link href="/p-user/account-details">جزئیات اکانت</Link>
+              </div>
             </div>
-          </div>
-
-          {/* Finish My-account section */}
+          ) : (
+            <li>
+              <Link href="/login-register">ورود / عضویت</Link>
+            </li>
+          )}
         </ul>
 
         <div className={styles.navbar_icons}>
