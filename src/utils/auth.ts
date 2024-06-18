@@ -20,7 +20,7 @@ export function generateAccessToken(data: {
     { ...data },
     process.env.ACCESS_TOKEN_SECRET_KEY as string,
     {
-      expiresIn: "60s",
+      expiresIn: "10h",
     }
   );
 

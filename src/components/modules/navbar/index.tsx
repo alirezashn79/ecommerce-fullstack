@@ -17,6 +17,7 @@ interface INavbarProps {
     role: string;
   } | null;
 }
+
 function Navbar({ isLogin }: INavbarProps) {
   const [{ y }] = useWindowScroll();
   return (
@@ -48,7 +49,7 @@ function Navbar({ isLogin }: INavbarProps) {
             <Link href="/rules">قوانین</Link>
           </li>
 
-          {isLogin ? (
+          {!!isLogin ? (
             <div className={styles.dropdown}>
               <Link href="/p-user">
                 <IoIosArrowDown className={styles.dropdown_icons} />
