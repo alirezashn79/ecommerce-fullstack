@@ -34,7 +34,7 @@ export default async function IndexLayout({
   }
   return (
     <>
-      <Navbar isLogin={JSON.parse(JSON.stringify(user))} />
+      <Navbar isLogin={user ? true : false} />
 
       <main>{children}</main>
 

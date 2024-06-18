@@ -9,13 +9,14 @@ import { LuShoppingCart } from "react-icons/lu";
 import styles from "./Navbar.module.css";
 
 interface INavbarProps {
-  isLogin: {
-    _id: string;
-    name: string;
-    email: string;
-    phone: string;
-    role: string;
-  } | null;
+  // isLogin: {
+  //   _id: string;
+  //   name: string;
+  //   email: string;
+  //   phone: string;
+  //   role: string;
+  // } | null;
+  isLogin: boolean;
 }
 
 function Navbar({ isLogin }: INavbarProps) {
@@ -49,7 +50,7 @@ function Navbar({ isLogin }: INavbarProps) {
             <Link href="/rules">قوانین</Link>
           </li>
 
-          {!!isLogin ? (
+          {isLogin ? (
             <div className={styles.dropdown}>
               <Link href="/p-user">
                 <IoIosArrowDown className={styles.dropdown_icons} />

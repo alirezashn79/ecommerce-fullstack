@@ -26,7 +26,8 @@
       "models/*": ["./models/*"],
       "schemas/*": ["./schemas/*"],
       "utils/*": ["./src/utils/*"],
-      "styles/*": ["./src/styles/*"]
+      "styles/*": ["./src/styles/*"],
+      "components/*": ["./src/components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

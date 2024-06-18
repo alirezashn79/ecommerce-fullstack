@@ -1,10 +1,10 @@
-// import Breadcrumb from "@/components/modules/breadcrumb/Breadcrumb";
+import Breadcrumb from "components/modules/breadcrumb/Breadcrumb";
 import styles from "styles/about-us.module.css";
 
 export default function AboutUsPage() {
   return (
     <>
-      {/* <Breadcrumb route={"درباره ما"} /> */}
+      <Breadcrumb route={"درباره ما"} />
       <div className={styles.container}>
         <section>
           <div>
