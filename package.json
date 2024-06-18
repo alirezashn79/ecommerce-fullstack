@@ -29,7 +29,8 @@
     "recharts": "^2.10.3",
     "sweetalert": "^2.1.2",
     "swiper": "^11.0.4",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",

@@ -1,5 +1,6 @@
+import { Types } from "mongoose";
 import { object, string } from "yup";
-
+import { z } from "zod";
 export const userSchema = object({
   name: string().trim().min(6).required(),
   email: string()
