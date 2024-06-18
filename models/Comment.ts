@@ -1,13 +1,13 @@
 import { model, models, Schema, Types } from "mongoose";
 import { zCommentSchema } from "schemas/comment";
-import { infer } from "zod";
+import { z } from "zod";
 import "./Product";
 
-interface ICommentSchema extends infer<typeof zCommentSchema> {
-  product: Types.ObjectId;
-}
+type TCommentSchema = Omit<z.infer<typeof zCommentSchema>, "productID"> & {
+  productID: Types.ObjectId;
+};
 
-const commentSchema = new Schema<ICommentSchema>({
+const commentSchema = new Schema<TCommentSchema>({
   username: {
     type: String,
     required: true,
@@ -29,7 +29,7 @@ const commentSchema = new Schema<ICommentSchema>({
     default: Date.now,
     immutable: true,
   },
-  product: {
+  productID: {
     type: Schema.Types.ObjectId,
     ref: "Product",
     required: true,
@@ -37,6 +37,6 @@ const commentSchema = new Schema<ICommentSchema>({
 });
 
 const commentModel =
-  models.Comment || model<ICommentSchema>("Comment", commentSchema);
+  models.Comment || model<TCommentSchema>("Comment", commentSchema);
 
 export default commentModel;
