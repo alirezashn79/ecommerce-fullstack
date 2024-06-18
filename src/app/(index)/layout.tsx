@@ -33,12 +33,12 @@ export default async function IndexLayout({
     }
   }
   return (
-    <>
+    <div style={{ overflow: "auto" }}>
       <Navbar isLogin={user ? true : false} />
 
       <main>{children}</main>
 
       <Footer />
-    </>
+    </div>
   );
 }

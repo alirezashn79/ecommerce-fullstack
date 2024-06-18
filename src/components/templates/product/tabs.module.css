@@ -1,0 +1,209 @@
+.tabs {
+  position: relative;
+  padding: 50px;
+  padding-bottom: 80px;
+  width: 100%;
+}
+
+.tabs input[name="tab-control"] {
+  display: none;
+}
+
+.tabs .contents section h2,
+.tabs ul li label {
+  font-family: "Montserrat";
+  font-weight: bold;
+  font-size: 18px;
+  color: #428bff;
+}
+
+.tabs ul {
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  width: 390px;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.tabs ul li {
+  box-sizing: border-box;
+  flex: 1;
+  width: 30px;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.tabs ul li label {
+  transition: all 0.3s ease-in-out;
+  color: gray;
+  font-size: 16px;
+
+  position: relative;
+  padding-top: 20px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: shabnam;
+}
+
+.contents {
+  margin-top: 30px;
+}
+
+.contents section p {
+  margin-top: 20px;
+}
+.tabs_content {
+  display: none;
+  -webkit-animation-name: content;
+  animation-name: content;
+  -webkit-animation-direction: normal;
+  animation-direction: normal;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  font-family: shabnam;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  line-height: 1.4;
+}
+
+.tabs
+  input[name="tab-control"]:nth-of-type(1):checked
+  ~ .contents
+  > section:nth-child(1),
+.tabs
+  input[name="tab-control"]:nth-of-type(2):checked
+  ~ .contents
+  > section:nth-child(2),
+.tabs
+  input[name="tab-control"]:nth-of-type(3):checked
+  ~ .contents
+  > section:nth-child(3) {
+  display: block;
+}
+
+.tabs
+  input[name="tab-control"]:nth-of-type(1):checked
+  ~ ul
+  > li:nth-child(1)
+  > label,
+.tabs
+  input[name="tab-control"]:nth-of-type(2):checked
+  ~ ul
+  > li:nth-child(2)
+  > label,
+.tabs
+  input[name="tab-control"]:nth-of-type(3):checked
+  ~ ul
+  > li:nth-child(3)
+  > label {
+  cursor: pointer;
+  color: #000000;
+}
+
+.tabs
+  input[name="tab-control"]:nth-of-type(1):checked
+  ~ ul
+  > li:nth-child(1)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(2):checked
+  ~ ul
+  > li:nth-child(2)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(3):checked
+  ~ ul
+  > li:nth-child(3)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(1)
+  ~ ul
+  > li:nth-child(1)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(2)
+  ~ ul
+  > li:nth-child(2)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(3)
+  ~ ul
+  > li:nth-child(3)
+  > label::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, rgb(24, 24, 24), rgb(54, 54, 54));
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+
+.tabs
+  input[name="tab-control"]:nth-of-type(1):checked
+  ~ ul
+  > li:nth-child(1)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(2):checked
+  ~ ul
+  > li:nth-child(2)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(3):checked
+  ~ ul
+  > li:nth-child(3)
+  > label::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(1)
+  ~ ul
+  > li:nth-child(1)
+  > label:hover::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(2)
+  ~ ul
+  > li:nth-child(2)
+  > label:hover::before,
+.tabs
+  input[name="tab-control"]:nth-of-type(3)
+  ~ ul
+  > li:nth-child(3)
+  > label:hover::before {
+  width: 100%;
+}
+
+@-webkit-keyframes content {
+  from {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes content {
+  from {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
