@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, Models, models, Schema, Types } from "mongoose";
 import { ZProductSchema } from "schemas/products";
 import { infer } from "zod";
 import "./Comment";
@@ -55,6 +55,10 @@ const productSchema = new Schema<IProductSchema>({
   },
   tags: {
     type: [String],
+    required: true,
+  },
+  inventory: {
+    type: Number,
     required: true,
   },
   comments: {

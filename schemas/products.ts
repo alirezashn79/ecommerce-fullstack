@@ -10,4 +10,5 @@ export const ZProductSchema = z.object({
   smell: z.string().trim().min(4),
   score: z.number().positive().optional(),
   tags: z.array(z.string().trim().min(4)),
+  inventory: z.number().positive(),
 });

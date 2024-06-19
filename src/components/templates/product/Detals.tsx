@@ -11,6 +11,15 @@ import { IoCheckmark } from "react-icons/io5";
 import { TbSwitch3 } from "react-icons/tb";
 import Breadcrumb from "./Breadcrumb";
 import styles from "./details.module.css";
+import { z } from "zod";
+import { ZProductSchema } from "schemas/products";
+import { zCommentSchema } from "schemas/comment";
+
+interface IDetailsProps {
+  product: z.infer<typeof ZProductSchema> & {
+    comments: z.infer<typeof zCommentSchema>;
+  };
+}
 
 const Details = () => {
   return (
