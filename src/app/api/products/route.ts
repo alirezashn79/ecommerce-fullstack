@@ -42,7 +42,9 @@ export async function GET() {
   try {
     await connectToDB();
 
-    const product = await productModel.find({}, "-__v").populate("comments");
+    const product = await productModel
+      .find({}, "-__v")
+      .populate("comments", "-__v");
 
     return Response.json(product, { status: 200 });
   } catch (error) {

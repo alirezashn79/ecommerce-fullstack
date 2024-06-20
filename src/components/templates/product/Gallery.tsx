@@ -30,8 +30,8 @@ const Gallery = () => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2 gallery-slider"
       >
-        {images.map((img) => (
-          <SwiperSlide>
+        {images.map((img, idx) => (
+          <SwiperSlide key={idx}>
             <img src={img} />
           </SwiperSlide>
         ))}

@@ -1,5 +1,6 @@
 import { IoMdStar } from "react-icons/io";
 import styles from "./commentForm.module.css";
+import { FaStar } from "react-icons/fa";
 const CommentForm = () => {
   return (
     <div className={styles.form}>
@@ -11,11 +12,11 @@ const CommentForm = () => {
       <div className={styles.rate}>
         <p>امتیاز شما :</p>
         <div>
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
         </div>
       </div>
       <div className={styles.group}>

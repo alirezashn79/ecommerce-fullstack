@@ -1,25 +1,29 @@
 import Comment from "@/components/modules/comment/Comment";
 import styles from "./comments.module.css";
 import CommentForm from "./CommentForm";
+import { IFComment } from "types/auth";
 
-const Comments = () => {
+const Comments = ({
+  comments,
+  productName,
+}: {
+  comments: IFComment[];
+  productName: string;
+}) => {
   return (
     <div>
-      <p>نظرات (7) :</p>
+      <p>نظرات ({comments.length}) :</p>
       <hr />
 
       <main className={styles.comments}>
         <div className={styles.user_comments}>
           <p className={styles.title}>
-            7 دیدگاه برای کپسول قهوه SETPRESSO سازگار با دستگاه نسپرسو ( GOLD )
-            ده -10- عددی
+            ({comments.length}) دیدگاه برای {productName}
           </p>
           <div>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+            {comments.map((comment) => (
+              <Comment key={comment._id.toString()} comment={comment} />
+            ))}
           </div>
         </div>
         <div className={styles.form_bg}>
