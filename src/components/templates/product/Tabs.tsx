@@ -12,6 +12,7 @@ const Tabs = ({
   smell,
   weight,
   suitableFor,
+  productID,
 }: {
   comments: IFComment[];
   productName: string;
@@ -19,6 +20,7 @@ const Tabs = ({
   smell: string;
   weight: number;
   suitableFor: string;
+  productID: string;
 }) => {
   const [tab, setTab] = useState("description");
   return (
@@ -76,7 +78,11 @@ const Tabs = ({
           <MoreInfoes smell={smell} weight={weight} suitableFor={suitableFor} />
         </section>
         <section className={styles.tabs_content}>
-          <Comments productName={productName} comments={comments} />
+          <Comments
+            productID={productID}
+            productName={productName}
+            comments={comments}
+          />
         </section>
       </div>
     </div>

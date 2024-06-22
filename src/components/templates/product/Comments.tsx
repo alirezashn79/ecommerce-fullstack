@@ -6,9 +6,11 @@ import { IFComment } from "types/auth";
 const Comments = ({
   comments,
   productName,
+  productID,
 }: {
   comments: IFComment[];
   productName: string;
+  productID: string;
 }) => {
   return (
     <div>
@@ -27,7 +29,7 @@ const Comments = ({
           </div>
         </div>
         <div className={styles.form_bg}>
-          <CommentForm />
+          <CommentForm productID={productID} />
         </div>
       </main>
     </div>

@@ -40,6 +40,7 @@ const Product = async ({ params }: { params: { id: string } }) => {
           <Gallery />
         </div>
         <Tabs
+          productID={product._id.toString()}
           productName={product.name}
           longDescription={product.longDescription}
           comments={JSON.parse(JSON.stringify(product.comments))}

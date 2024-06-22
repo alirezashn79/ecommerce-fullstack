@@ -12,15 +12,17 @@ const Comment = ({ comment }: { comment: IFComment }) => {
             <strong>{comment.username}</strong>
             {comment.date}
           </div>
-          <div className={styles.stars}>
-            {Array.from({ length: comment.score }).map((_, idx) => (
-              <FaStar key={idx} />
-            ))}
-            {comment.score < 5 &&
-              Array.from({ length: 5 - comment.score }).map((_, idx) => (
-                <FaStar key={idx} style={{ color: "gray" }} />
+          {comment.score > 0 && (
+            <div className={styles.stars}>
+              {Array.from({ length: comment.score }).map((_, idx) => (
+                <FaStar key={idx} />
               ))}
-          </div>
+              {comment.score < 5 &&
+                Array.from({ length: 5 - comment.score }).map((_, idx) => (
+                  <FaStar key={idx} style={{ color: "gray" }} />
+                ))}
+            </div>
+          )}
         </div>
         <p>{comment.body}</p>
       </div>

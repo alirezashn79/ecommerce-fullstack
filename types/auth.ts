@@ -1,9 +1,9 @@
-import { InferType } from "yup";
-import { userSchema } from "schemas/auth";
-import { z } from "zod";
-import { zCommentSchema } from "schemas/comment";
 import { Types } from "mongoose";
+import { userSchema } from "schemas/auth";
+import { zCommentSchema } from "schemas/comment";
 import { ZProductSchema } from "schemas/products";
+import { InferType } from "yup";
+import { z } from "zod";
 
 export type TUserCreate = InferType<typeof userSchema>;
 
@@ -19,7 +19,6 @@ export interface IFComment
   _id: TObjectId;
   date: string;
 }
-
 export interface IFProduct extends z.infer<typeof ZProductSchema> {
   _id: TObjectId;
   comments: IFComment[];
