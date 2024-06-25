@@ -4,8 +4,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { IFProduct } from "types/auth";
 
-const MoreProducts = () => {
+const MoreProducts = ({
+  relatedProducts,
+}: {
+  relatedProducts: IFProduct[];
+}) => {
   return (
     <div data-aos="fade-right">
       <section>
@@ -28,30 +33,11 @@ const MoreProducts = () => {
         modules={[Navigation]}
         className="mySwiper "
       >
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProductCard />
-        </SwiperSlide>
+        {relatedProducts.map((product) => (
+          <SwiperSlide key={product._id.toString()}>
+            <ProductCard product={product} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

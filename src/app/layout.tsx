@@ -38,7 +38,7 @@ export default function RootLayout({
         <AosInit />
         {children}
         <ScrollToTop />
-        <ToastContainer position="top-center" theme="dark" />
+        <ToastContainer position="top-center" theme="colored" />
       </body>
     </html>
   );

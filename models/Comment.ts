@@ -1,9 +1,9 @@
 import { model, models, Schema, Types } from "mongoose";
 import { zCommentSchema } from "schemas/comment";
-import { z } from "zod";
+import { TypeOf } from "zod";
 import "./Product";
 
-type TCommentSchema = Omit<z.infer<typeof zCommentSchema>, "productID"> & {
+type TCommentSchema = Omit<TypeOf<typeof zCommentSchema>, "productID"> & {
   productID: Types.ObjectId;
 };
 
@@ -28,6 +28,10 @@ const commentSchema = new Schema<TCommentSchema>({
     type: Date,
     default: Date.now,
     immutable: true,
+  },
+  isAccepted: {
+    type: Boolean,
+    default: false,
   },
   productID: {
     type: Schema.Types.ObjectId,

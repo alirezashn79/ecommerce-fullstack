@@ -2,8 +2,9 @@ import Link from "next/link";
 import styles from "./product-card.module.css";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { CiSearch, CiHeart } from "react-icons/ci";
+import { IFProduct } from "types/auth";
 
-export default function ProductCard() {
+export default function ProductCard({ product }: { product: IFProduct }) {
   return (
     <div className={styles.card}>
       <div className={styles.details_container}>
@@ -12,7 +13,7 @@ export default function ProductCard() {
           alt=""
         />
         <div className={styles.icons}>
-          <Link href="/">
+          <Link href={`/product/${product._id}`}>
             <CiSearch />
             <p className={styles.tooltip}>مشاهده سریع</p>
           </Link>
@@ -25,16 +26,14 @@ export default function ProductCard() {
       </div>
 
       <div className={styles.details}>
-        <Link href={"/"}>
-          کپسول قهوه SETpresso سازگار با دستگاه نسپرسو ( RED ) 10 عددی LIMITED
-          EDITION
-        </Link>
+        <Link href={`/product/${product._id}`}>{product.name}</Link>
         <div>
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaRegStar />
-          <FaRegStar />
+          {Array.from({ length: product.score }).map((_, idx) => (
+            <FaStar key={idx} />
+          ))}
+          {Array.from({ length: 5 - product.score }).map((_, idx) => (
+            <FaRegStar key={idx} />
+          ))}
         </div>
         <span>825,000 تومان</span>
       </div>

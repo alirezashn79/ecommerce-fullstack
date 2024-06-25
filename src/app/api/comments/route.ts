@@ -21,9 +21,10 @@ export async function POST(req: Request) {
 
     await connectToDB();
 
-    const product = await productModel.exists({
-      _id: validationResult.data.productID,
-    });
+    const product = await productModel.findById(
+      validationResult.data.productID,
+      "score comments"
+    );
 
     if (!product) {
       return Response.json(
@@ -35,10 +36,16 @@ export async function POST(req: Request) {
     }
 
     const comment = await commentModel.create(validationResult.data);
+
+    const totalScore = Math.ceil(
+      (validationResult.data.score + product.comments.length * product.score) /
+        (product.comments.length + 1)
+    );
     await productModel.findByIdAndUpdate(validationResult.data.productID, {
       $push: {
         comments: comment._id,
       },
+      score: totalScore,
     });
 
     return Response.json(
@@ -47,7 +54,7 @@ export async function POST(req: Request) {
         data: comment,
       },
       {
-        status: 200,
+        status: 201,
       }
     );
   } catch (error) {
@@ -63,6 +70,7 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     await connectToDB();
+
     const comments = await commentModel.find({}, "-__v");
 
     return Response.json(comments);

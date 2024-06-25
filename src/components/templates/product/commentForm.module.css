@@ -17,16 +17,18 @@
 }
 .rate div {
   display: flex;
+  flex-direction: row-reverse;
   gap: 2px;
   padding-top: 0.2rem;
   direction: ltr;
   font-size: 1.1rem;
   color: gray;
 }
-.rate div svg:hover,
+
+/* .rate div svg:hover,
 .rate div svg:hover ~ svg {
   color: orange; /* رنگ هنگام هاور */
-}
+/* }  */
 
 .group {
   margin-top: 2rem;

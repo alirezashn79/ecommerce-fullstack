@@ -4,7 +4,24 @@ import Comments from "./Comments";
 import Description from "./Description";
 import MoreInfoes from "./MoreInfoes";
 import styles from "./tabs.module.css";
-const Tabs = () => {
+import { IFComment } from "types/auth";
+const Tabs = ({
+  comments,
+  productName,
+  longDescription,
+  smell,
+  weight,
+  suitableFor,
+  productID,
+}: {
+  comments: IFComment[];
+  productName: string;
+  longDescription: string;
+  smell: string;
+  weight: number;
+  suitableFor: string;
+  productID: string;
+}) => {
   const [tab, setTab] = useState("description");
   return (
     <div data-aos="fade-left" className={styles.tabs}>
@@ -13,21 +30,21 @@ const Tabs = () => {
         type="radio"
         id="description"
         name="tab-control"
-        checked={tab === "description" && true}
+        defaultChecked={tab === "description" && true}
       />
       <input
         onClick={() => setTab("moreInfoes")}
         type="radio"
         id="moreInfoes"
         name="tab-control"
-        checked={tab == "moreInfoes" && true}
+        defaultChecked={tab == "moreInfoes" && true}
       />
       <input
         onClick={() => setTab("comments")}
         type="radio"
         id="comments"
         name="tab-control"
-        checked={tab == "comments" && true}
+        defaultChecked={tab == "comments" && true}
       />
       <ul>
         <li title="Features">
@@ -45,20 +62,27 @@ const Tabs = () => {
         <li title="Shipping">
           <label htmlFor="comments" role="button">
             {" "}
-            نظرات (7){" "}
+            نظرات ({comments.filter((item) => item.isAccepted).length}){" "}
           </label>
         </li>
       </ul>
 
       <div className={styles.contents}>
         <section className={styles.tabs_content}>
-          <Description />
+          <Description
+            productName={productName}
+            longDescription={longDescription}
+          />
         </section>
         <section className={styles.tabs_content}>
-          <MoreInfoes />
+          <MoreInfoes smell={smell} weight={weight} suitableFor={suitableFor} />
         </section>
         <section className={styles.tabs_content}>
-          <Comments />
+          <Comments
+            productID={productID}
+            productName={productName}
+            comments={comments}
+          />
         </section>
       </div>
     </div>
