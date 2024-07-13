@@ -1,4 +1,3 @@
-import { CiHeart } from "react-icons/ci";
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -9,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { IoCheckmark } from "react-icons/io5";
 import { TbSwitch3 } from "react-icons/tb";
+import AddToWishlist from "./AddToWishlist";
 import Breadcrumb from "./Breadcrumb";
 import styles from "./details.module.css";
 
@@ -76,10 +76,7 @@ const Details: React.FC<IDetailsProps> = ({
       </div>
 
       <section className={styles.wishlist}>
-        <div>
-          <CiHeart />
-          <a href="/">افزودن به علاقه مندی ها</a>
-        </div>
+        <AddToWishlist productId={id} />
         <div>
           <TbSwitch3 />
           <a href="/">مقایسه</a>

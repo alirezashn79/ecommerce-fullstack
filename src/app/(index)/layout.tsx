@@ -8,28 +8,23 @@ import { cookies } from "next/headers";
 export default async function IndexLayout({
   children,
 }: {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }) {
   let user = null;
 
-  const cookieStore = cookies();
+  const cookiesStore = cookies();
 
-  const token = cookieStore.get("token");
+  const token = cookiesStore.get("token");
 
   if (token) {
     const tokenValue = token.value;
 
     const tokenPayload = verifyAccessToken(tokenValue);
 
-    console.log(tokenPayload);
-
     if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
 
-      user = await userModel.findOne(
-        { email: tokenPayload.email },
-        "name email phone role"
-      );
+      user = await userModel.exists({ email: tokenPayload.email });
     }
   }
   return (

@@ -37,15 +37,15 @@ export async function POST(req: Request) {
 
     const comment = await commentModel.create(validationResult.data);
 
-    const totalScore = Math.ceil(
-      (validationResult.data.score + product.comments.length * product.score) /
-        (product.comments.length + 1)
-    );
+    // const totalScore = Math.ceil(
+    //   (validationResult.data.score + product.comments.length * product.score) /
+    //     (product.comments.length + 1)
+    // );
     await productModel.findByIdAndUpdate(validationResult.data.productID, {
       $push: {
         comments: comment._id,
       },
-      score: totalScore,
+      // score: totalScore,
     });
 
     return Response.json(

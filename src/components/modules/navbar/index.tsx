@@ -9,13 +9,6 @@ import { LuShoppingCart } from "react-icons/lu";
 import styles from "./Navbar.module.css";
 
 interface INavbarProps {
-  // isLogin: {
-  //   _id: string;
-  //   name: string;
-  //   email: string;
-  //   phone: string;
-  //   role: string;
-  // } | null;
   isLogin: boolean;
 }
 
