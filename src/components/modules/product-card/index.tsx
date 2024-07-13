@@ -1,10 +1,21 @@
 import Link from "next/link";
-import styles from "./product-card.module.css";
+import { CiHeart, CiSearch } from "react-icons/ci";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { CiSearch, CiHeart } from "react-icons/ci";
-import { IFProduct } from "types/auth";
+import styles from "./product-card.module.css";
 
-export default function ProductCard({ product }: { product: IFProduct }) {
+interface IProductCardProps {
+  id: string;
+  name: string;
+  score: number;
+  price: number;
+}
+
+export default function ProductCard({
+  id,
+  name,
+  score,
+  price,
+}: IProductCardProps) {
   return (
     <div className={styles.card}>
       <div className={styles.details_container}>
@@ -13,7 +24,7 @@ export default function ProductCard({ product }: { product: IFProduct }) {
           alt=""
         />
         <div className={styles.icons}>
-          <Link href={`/product/${product._id}`}>
+          <Link href={`/product/${id}`}>
             <CiSearch />
             <p className={styles.tooltip}>مشاهده سریع</p>
           </Link>
@@ -26,16 +37,16 @@ export default function ProductCard({ product }: { product: IFProduct }) {
       </div>
 
       <div className={styles.details}>
-        <Link href={`/product/${product._id}`}>{product.name}</Link>
+        <Link href={`/product/${id}`}>{name}</Link>
         <div>
-          {Array.from({ length: product.score }).map((_, idx) => (
+          {Array.from({ length: score }).map((_, idx) => (
             <FaStar key={idx} />
           ))}
-          {Array.from({ length: 5 - product.score }).map((_, idx) => (
+          {Array.from({ length: 5 - score }).map((_, idx) => (
             <FaRegStar key={idx} />
           ))}
         </div>
-        <span>{product.price.toLocaleString()} تومان</span>
+        <span>{price.toLocaleString()} تومان</span>
       </div>
     </div>
   );
