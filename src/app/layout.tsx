@@ -38,7 +38,14 @@ export default function RootLayout({
         <AosInit />
         {children}
         <ScrollToTop />
-        <ToastContainer position="top-center" theme="colored" />
+        <ToastContainer
+          position="top-center"
+          theme="light"
+          hideProgressBar={true}
+          closeButton={false}
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+        />
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const reqBody = await req.json();
 
-    const validationResult = await zCommentSchema.safeParseAsync(reqBody);
+    const validationResult = zCommentSchema.safeParse(reqBody);
 
     if (!validationResult.success) {
       return Response.json(

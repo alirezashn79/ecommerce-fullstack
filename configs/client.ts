@@ -9,7 +9,14 @@ const client = axios.create({
 client.interceptors.response.use(
   (res) => res,
   (error) => {
-    toast.error("خطایی رخ داده است");
+    if (error.response) {
+      if (error.response.status === 404) {
+        toast.error("خطای داخلی");
+      } else {
+        toast.error(error.response.data.message);
+      }
+      return Promise.reject(error);
+    }
   }
 );
 
