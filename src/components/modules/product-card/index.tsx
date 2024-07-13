@@ -46,7 +46,7 @@ export default function ProductCard({
             <FaRegStar key={idx} />
           ))}
         </div>
-        <span>{price.toLocaleString()} تومان</span>
+        <span>{price?.toLocaleString()} تومان</span>
       </div>
     </div>
   );

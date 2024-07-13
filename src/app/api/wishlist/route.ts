@@ -39,6 +39,7 @@ export async function POST(req: Request) {
     }
 
     const isProductExist = await wishListModel.countDocuments({
+      user: validationResult.data.user,
       product: validationResult.data.product,
     });
     if (isProductExist > 0) {

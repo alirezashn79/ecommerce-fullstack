@@ -1,4 +1,4 @@
-import { model, Models, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 import { ZProductSchema } from "schemas/products";
 import { infer } from "zod";
 import "./Comment";

@@ -1,7 +1,6 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
 import { useWishlist } from "@/hooks/useWishlist";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { CiHeart } from "react-icons/ci";
@@ -18,7 +17,16 @@ export default function AddToWishlist({ productId }: { productId: string }) {
       router.push("/login-register");
       return;
     }
-    await addToWishes({ user: user._id, product: productId });
+    try {
+      await addToWishes({ user: user._id, product: productId });
+      toast.success("محصول به علاقه مندی ها اضافه شد");
+    } catch (error) {
+      if (error.response) {
+        toast.error(
+          `Error - (${error.response.status}) :  ${error.response.data.message}`
+        );
+      }
+    }
   };
 
   useEffect(() => {
