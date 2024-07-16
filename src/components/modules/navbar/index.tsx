@@ -53,7 +53,7 @@ function Navbar({ isLogin }: INavbarProps) {
                 <Link href="/p-user/orders">سفارشات</Link>
                 <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
                 <Link href="/p-user/comments">کامنت‌ها</Link>
-                <Link href="/p-user/wishlist">علاقه‌مندی‌ها</Link>
+                <Link href="/wishlist">علاقه‌مندی‌ها</Link>
                 <Link href="/p-user/account-details">جزئیات اکانت</Link>
               </div>
             </div>

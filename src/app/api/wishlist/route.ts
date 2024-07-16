@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     const user = await userModel.countDocuments({
       _id: validationResult.data.user,
     });
+
     if (user === 0) {
       return Response.json({ message: "user not found...!" }, { status: 404 });
     }
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
     const product = await productModel.countDocuments({
       _id: validationResult.data.product,
     });
+
     if (product === 0) {
       return Response.json(
         { message: "product not found...!" },
