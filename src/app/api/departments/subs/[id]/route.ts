@@ -4,30 +4,25 @@ import { isValidObjectId } from "mongoose";
 
 export async function GET(
   req: Request,
-  {
-    params,
-  }: {
-    params: {
-      id: string;
-    };
-  }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
-    await connectToDB();
-
-    if (!isValidObjectId(id)) {
+    // codes
+    if (!isValidObjectId(params.id)) {
       return Response.json(
-        { message: "id is invalid" },
+        { message: "id is invalid...!" },
         {
-          status: 400,
+          status: 422,
         }
       );
     }
 
-    const result = await subDepartmentModel.findById(id);
+    await connectToDB();
+    const subDepartments = await subDepartmentModel.find({
+      department: params.id,
+    });
 
-    return Response.json(result);
+    return Response.json(subDepartments);
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },

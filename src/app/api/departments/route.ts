@@ -1,11 +1,14 @@
 import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "configs/db";
 import departmentModel from "models/Department";
+import { NextRequest } from "next/server";
 import { zDepartmentSchema } from "schemas/department";
 
 export async function POST(req: Request) {
   try {
     const user = await authUser();
+
+    console.log(user);
 
     if (!user) {
       return Response.json(

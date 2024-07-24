@@ -37,13 +37,17 @@ const schema = new Schema<TTicket>(
     },
 
     priority: {
-      type: Number,
-      enum: [1, 2, 3],
-      default: 1,
+      type: String,
+      enum: ["1", "2", "3"],
+      default: "1",
     },
     body: {
       type: String,
       required: true,
+    },
+    isAnswer: {
+      type: Boolean,
+      default: false,
     },
   },
   {
