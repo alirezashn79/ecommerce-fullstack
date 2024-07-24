@@ -70,3 +70,16 @@ export const signinDynamicIndntifier = object({
     )
     .required(),
 });
+
+export const userInfoSchema = object({
+  email: string().email().trim().min(6).required(),
+  name: string().trim().min(6).required(),
+  phone: string()
+    .trim()
+    .matches(
+      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+      "phone number is not valid"
+    )
+    .min(11, "phone number must be atleast 11 character")
+    .required(),
+});

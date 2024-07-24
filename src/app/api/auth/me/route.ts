@@ -14,7 +14,10 @@ export async function GET(req: Request) {
     const tokenPayload = verifyAccessToken(token.value);
     if (tokenPayload && tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
-      user = await userModel.exists({ email: tokenPayload.email });
+      user = await userModel.findOne(
+        { email: tokenPayload.email },
+        "name email phone role"
+      );
     }
   }
 

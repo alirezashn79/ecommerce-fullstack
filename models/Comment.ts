@@ -2,9 +2,11 @@ import { model, models, Schema, Types } from "mongoose";
 import { zCommentSchema } from "schemas/comment";
 import { TypeOf } from "zod";
 import "./Product";
+import "./User";
 
-type TCommentSchema = Omit<TypeOf<typeof zCommentSchema>, "productID"> & {
-  productID: Types.ObjectId;
+type TCommentSchema = Omit<TypeOf<typeof zCommentSchema>, "product"> & {
+  product: Types.ObjectId;
+  user: Types.ObjectId;
 };
 
 const commentSchema = new Schema<TCommentSchema>({
@@ -33,9 +35,14 @@ const commentSchema = new Schema<TCommentSchema>({
     type: Boolean,
     default: false,
   },
-  productID: {
+  product: {
     type: Schema.Types.ObjectId,
     ref: "Product",
+    required: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
 });

@@ -1,3 +1,4 @@
+import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "configs/db";
 import commentModel from "models/Comment";
 import productModel from "models/Product";
@@ -5,6 +6,17 @@ import { zCommentSchema } from "schemas/comment";
 
 export async function POST(req: Request) {
   try {
+    const user = await authUser();
+
+    if (!user) {
+      return Response.json(
+        { message: "you are not login...!" },
+        {
+          status: 401,
+        }
+      );
+    }
+
     const reqBody = await req.json();
 
     const validationResult = zCommentSchema.safeParse(reqBody);
@@ -22,7 +34,7 @@ export async function POST(req: Request) {
     await connectToDB();
 
     const product = await productModel.findById(
-      validationResult.data.productID,
+      validationResult.data.product,
       "score comments"
     );
 
@@ -35,13 +47,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const comment = await commentModel.create(validationResult.data);
+    const comment = await commentModel.create({
+      ...validationResult.data,
+      user: user._id,
+    });
 
     // const totalScore = Math.ceil(
     //   (validationResult.data.score + product.comments.length * product.score) /
     //     (product.comments.length + 1)
     // );
-    await productModel.findByIdAndUpdate(validationResult.data.productID, {
+    await productModel.findByIdAndUpdate(validationResult.data.product, {
       $push: {
         comments: comment._id,
       },

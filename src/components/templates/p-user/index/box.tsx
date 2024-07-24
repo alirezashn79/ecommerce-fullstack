@@ -6,7 +6,7 @@ interface IBoxProps {
   value: string;
 }
 
-const Box = ({ title, value }: IBoxProps) => {
+const Box = async ({ title, value }: IBoxProps) => {
   return (
     <div className={styles.box}>
       <span>{value}</span>

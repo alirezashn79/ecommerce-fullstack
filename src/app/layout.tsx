@@ -5,19 +5,19 @@ import localFont from "next/font/local";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
-const shabnamFont = localFont({
-  src: [
-    {
-      path: "../../public/fonts/shabnam/Shabnam-Medium.woff2",
-      weight: "normal",
-    },
-    {
-      path: "../../public/fonts/shabnam/Shabnam-Bold.woff2",
-      weight: "bold",
-    },
-  ],
-  display: "swap",
-});
+// const shabnamFont = localFont({
+//   src: [
+//     {
+//       path: "../../public/fonts/shabnam/Shabnam-Medium.woff2",
+//       weight: "normal",
+//     },
+//     {
+//       path: "../../public/fonts/shabnam/Shabnam-Bold.woff2",
+//       weight: "bold",
+//     },
+//   ],
+//   display: "swap",
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,7 +34,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa">
-      <body className={shabnamFont.className}>
+      <body
+      // className={shabnamFont.className}
+      >
         <AosInit />
         {children}
         <ScrollToTop />

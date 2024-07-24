@@ -1,17 +1,19 @@
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-/* @font-face {
+@font-face {
   font-family: shabnam;
-  src: url("/fonts/shabnam/Shabnam-Medium.woff2");
+  src: url("/fonts/shabnam/Shabnam.woff2");
 }
 
 @font-face {
   font-family: shabnam-Bold;
   src: url("/fonts/shabnam/Shabnam-Bold.woff2");
-} */
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: shabnam;
+}
 
 body::-webkit-scrollbar {
   width: 10px;
@@ -64,25 +66,9 @@ a {
   font-weight: 1000;
 }
 
-.home-slider {
-  height: 85dvh;
-}
-
-@keyframes mymove {
-  0% {
-    scale: 100%;
-  }
-
-  100% {
-    scale: 110%;
-  }
-}
-.home-slider .swiper-slide-active {
-  animation: mymove 5.5s;
-}
 .home-slider img {
   position: relative;
-  object-fit: cover;
+  right: 1px;
 }
 
 .gallery-slider .swiper-button-prev:after,

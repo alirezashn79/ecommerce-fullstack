@@ -12,6 +12,8 @@ client.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 404) {
         toast.error("خطای داخلی");
+      } else if (error.response.status === 401) {
+        toast.error("لاگین نیستید");
       } else {
         toast.error(error.response.data.message);
       }

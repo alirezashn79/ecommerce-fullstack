@@ -11,12 +11,21 @@ const Layout = async ({ children }: { readonly children: React.ReactNode }) => {
   if (!isUser) {
     return redirect("/login-register");
   }
+  let typedUser;
+
+  if (typeof isUser === "object") {
+    typedUser = JSON.parse(JSON.stringify(isUser)) as {
+      _id: string;
+      name: string;
+      role: "ADMIN" | "USER";
+    };
+  }
   return (
     <div className={styles.layout}>
       <section className={styles.section}>
-        <Sidebar />
+        <Sidebar user={typedUser} />
         <div className={styles.contents}>
-          <Topbar />
+          <Topbar user={typedUser} />
           {children}
         </div>
       </section>

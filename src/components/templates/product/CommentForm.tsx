@@ -12,7 +12,7 @@ import styles from "./commentForm.module.css";
 
 const commentSchema = zCommentSchema.omit({
   date: true,
-  productID: true,
+  product: true,
   score: true,
 });
 type TCommentForm = TypeOf<typeof zCommentSchema>;
@@ -32,12 +32,11 @@ const CommentForm = ({ productID }: { productID: string }) => {
     const inputsData = {
       ...values,
       score,
-      productID,
+      product: productID,
     };
 
     const res = await client.post("/comments", inputsData);
 
-    console.log(res);
     if (res.status === 201) {
       toast.success(res.data.message);
       reset();

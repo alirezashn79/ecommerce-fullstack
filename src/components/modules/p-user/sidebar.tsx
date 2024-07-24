@@ -1,5 +1,6 @@
 "use client";
 
+import client from "configs/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaComments, FaHeart, FaShoppingBag, FaUsers } from "react-icons/fa";
@@ -9,7 +10,15 @@ import { TbListDetails } from "react-icons/tb";
 import swal from "sweetalert";
 import styles from "./sidebar.module.css";
 
-const Sidebar = () => {
+const Sidebar = ({
+  user,
+}: {
+  user?: {
+    _id: string;
+    name: string;
+    role: "ADMIN" | "USER";
+  };
+}) => {
   const path = usePathname();
 
   const logoutHandler = () => {
@@ -17,14 +26,21 @@ const Sidebar = () => {
       title: "آیا از خروج اطمینان دارید؟",
       icon: "warning",
       buttons: ["نه", "آره"],
-    }).then((result) => {
-      //code
+    }).then(async (result) => {
+      if (result) {
+        await client.get("/auth/signout");
+        swal({
+          buttons: "باش",
+          icon: "success",
+          title: "خروج با موفقیت",
+        }).then(() => location.replace("/"));
+      }
     });
   };
   return (
     <aside className={styles.sidebar}>
       <div className={styles.sidebar_header}>
-        <p>خوش اومدی شاهین عزیز</p>
+        <p>خوش اومدی {user?.name} عزیز</p>
       </div>
       <ul className={styles.sidebar_main}>
         {path.includes("/p-user") ? (

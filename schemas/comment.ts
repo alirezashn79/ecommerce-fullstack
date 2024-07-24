@@ -8,7 +8,7 @@ export const zCommentSchema = z.object({
   score: z.number().nonnegative(),
   date: z.date().readonly().optional(),
   isAccepted: z.boolean().default(false).optional(),
-  productID: z.string().refine((value) => {
+  product: z.string().refine((value) => {
     return Types.ObjectId.isValid(value);
   }),
 });

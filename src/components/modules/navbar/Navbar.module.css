@@ -25,14 +25,6 @@
   height: 73px !important;
   box-shadow: none !important;
 }
-@keyframes fadeInDownBig {
-  0% {
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    transform: none;
-  }
-}
 .navbar_fixed {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   position: fixed;
@@ -44,7 +36,14 @@
   background: white;
   z-index: 999;
 }
-
+@keyframes fadeInDownBig {
+  0% {
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    transform: none;
+  }
+}
 .navbar {
   position: absolute;
   width: 100%;
@@ -60,7 +59,7 @@
   list-style: none;
   font-size: 14px;
   font-weight: 500;
-  /* font-family: "shabnam", Arial, Helvetica, sans-serif; */
+  font-family: "shabnam", Arial, Helvetica, sans-serif;
   color: rgb(52, 24, 14);
   white-space: nowrap;
 }
@@ -91,7 +90,7 @@
   font-size: 13px;
   font-weight: 500;
   padding-bottom: 0.5rem;
-  /* font-family: "shabnam", Arial, Helvetica, sans-serif; */
+  font-family: "shabnam", Arial, Helvetica, sans-serif;
 }
 .dropdown a {
   display: flex;

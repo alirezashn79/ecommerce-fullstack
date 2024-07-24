@@ -20,3 +20,6 @@
   display: flex;
   flex-direction: row-reverse;
 }
+.container {
+  overflow: auto;
+}
