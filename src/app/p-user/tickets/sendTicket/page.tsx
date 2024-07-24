@@ -1,16 +1,16 @@
 "use client";
-import styles from "styles/p-user/sendTicket.module.css";
-import Link from "next/link";
-import { IoIosSend } from "react-icons/io";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { TypeOf } from "zod";
-import { zTicketSchema } from "schemas/ticket";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
-import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import client from "configs/client";
-import { toast } from "react-toastify";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { IoIosSend } from "react-icons/io";
+import { toast } from "react-toastify";
+import { zTicketSchema } from "schemas/ticket";
+import styles from "styles/p-user/sendTicket.module.css";
+import { TypeOf } from "zod";
 
 type TSendTicketForm = Omit<
   TypeOf<typeof zTicketSchema>,
@@ -55,6 +55,7 @@ const page = () => {
       reset();
       toast.success("تیکت با موفقیت ثبت شد");
       router.push("/p-user/tickets");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }

@@ -14,6 +14,7 @@ client.interceptors.response.use(
         toast.error("خطای داخلی");
       } else if (error.response.status === 401) {
         toast.error("لاگین نیستید");
+        location.replace("/login-register");
       } else {
         toast.error(error.response.data.message);
       }
