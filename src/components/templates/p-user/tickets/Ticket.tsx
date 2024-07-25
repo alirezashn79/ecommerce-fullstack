@@ -12,7 +12,7 @@ interface ITicket {
       _id: string;
       title: string;
     };
-    isAnswer: boolean;
+    hasAnswered: boolean;
     createdAt: Date;
   };
 }
@@ -22,17 +22,18 @@ const Ticket = ({ ticket }: ITicket) => {
       href={`/p-user/tickets/answer/${ticket._id}`}
       className={styles.ticket}
     >
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <p>{ticket.title}</p>
-        <div>
+      <div className="">
+        <p style={{ marginLeft: "auto" }}>{ticket.title}</p>
+        <div style={{ display: "flex", flexDirection: "row" }}>
           <p className={styles.department}>{ticket.department.title}</p>
           <p className={styles.department}>{ticket.subDepartment.title}</p>
         </div>
       </div>
+
       <div>
-        <p>{new Date(ticket.createdAt).toLocaleDateString("fa-IR")}</p>
-        <p className={styles.no_answer}>
-          {ticket.isAnswer ? "پاسخ داده شده" : "در انتظار پاسخگویی"}
+        <p>{new Date(ticket.createdAt).toLocaleString("fa-IR")}</p>
+        <p className={ticket.hasAnswered ? styles.answer : styles.no_answer}>
+          {ticket.hasAnswered ? "پاسخ داده شده" : "در انتظار پاسخگویی"}
         </p>
         {/* answer */}
       </div>

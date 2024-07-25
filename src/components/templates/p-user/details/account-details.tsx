@@ -2,6 +2,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import client from "configs/client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
@@ -10,6 +11,7 @@ import styles from "styles/p-user/accountDetails.module.css";
 import { InferType } from "yup";
 
 function AccountDetails() {
+  const { replace, refresh } = useRouter();
   const {
     register,
     getValues,
@@ -41,7 +43,8 @@ function AccountDetails() {
       }).then(async (result) => {
         if (result) {
           await client.get("/auth/signout");
-          location.replace("/login-register");
+          replace("/login-register");
+          refresh();
         }
       });
     }

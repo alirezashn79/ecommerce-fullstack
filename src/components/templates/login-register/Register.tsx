@@ -52,6 +52,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
       toast.success(res.data.message);
       reset();
       router.replace("/");
+      router.refresh();
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);

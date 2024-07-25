@@ -49,7 +49,8 @@ const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
         password: values.password,
       });
       toast.success(res.data.message);
-      window.location.replace("/");
+      router.replace("/");
+      router.refresh();
     } catch (error) {
       if (error.response) {
         toast.error(

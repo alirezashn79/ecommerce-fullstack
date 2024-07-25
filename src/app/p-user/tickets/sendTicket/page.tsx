@@ -14,7 +14,7 @@ import { TypeOf } from "zod";
 
 type TSendTicketForm = Omit<
   TypeOf<typeof zTicketSchema>,
-  "department" | "subDepartment" | "priority" | "isAnswer"
+  "department" | "subDepartment" | "priority" | "hasAnswered" | "answer"
 > & {
   department: string;
   subDepartment: string;

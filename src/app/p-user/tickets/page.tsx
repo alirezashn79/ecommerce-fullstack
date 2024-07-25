@@ -7,7 +7,7 @@ export default async function TicketsPage() {
   const user = await getUserId();
 
   const tickets = await ticketModel
-    .find({ user }, "title department subDepartment isAnswer createdAt")
+    .find({ user }, "title department subDepartment hasAnswered createdAt")
     .populate("department", "title")
     .populate("subDepartment", "title")
     .lean();

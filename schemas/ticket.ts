@@ -19,5 +19,10 @@ export const zTicketSchema = z.object({
     message: "اولویت الزامی است",
   }),
   body: z.string().trim().min(6),
-  isAnswer: z.boolean().default(false),
+  hasAnswered: z.boolean().default(false),
+  answer: z
+    .string()
+    .refine((value) => Types.ObjectId.isValid(value))
+    .optional()
+    .nullable(),
 });

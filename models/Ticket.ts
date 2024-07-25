@@ -7,11 +7,12 @@ import { zTicketSchema } from "schemas/ticket";
 
 type TTicket = Omit<
   TypeOf<typeof zTicketSchema>,
-  "department" | "subDepartment" | "user"
+  "department" | "subDepartment" | "user" | "answer"
 > & {
   user: Types.ObjectId;
   department: Types.ObjectId;
   subDepartment: Types.ObjectId;
+  answer: Types.ObjectId;
 };
 
 const schema = new Schema<TTicket>(
@@ -45,9 +46,14 @@ const schema = new Schema<TTicket>(
       type: String,
       required: true,
     },
-    isAnswer: {
+    hasAnswered: {
       type: Boolean,
       default: false,
+    },
+    answer: {
+      type: Schema.Types.ObjectId,
+      ref: "Ticket",
+      required: false,
     },
   },
   {
