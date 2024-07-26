@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IoIosNotifications, IoIosSearch } from "react-icons/io";
-import Modal from "./modal";
+import Modal from "../modal/modal";
 import styles from "./topbar.module.css";
 const Topbar = ({
   user,

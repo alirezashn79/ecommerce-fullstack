@@ -3,22 +3,26 @@ import Sidebar from "components/modules/sidebar/sidebar";
 import Topbar from "@/components/modules/topbar/topbar";
 import { redirect } from "next/navigation";
 import React from "react";
-import styles from "styles/p-user/userPanelLayout.module.css";
+import styles from "styles/p-admin/adminPanelLayout.module.css";
 
-const Layout = async ({ children }: { readonly children: React.ReactNode }) => {
-  const isUser = await authUser();
+export default async function AdminPanelLayout({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
+  const user = await authUser();
 
-  if (!isUser) {
-    return redirect("/login-register");
-  }
   let typedUser;
-
-  if (typeof isUser === "object") {
-    typedUser = JSON.parse(JSON.stringify(isUser)) as {
+  if (typeof user === "object") {
+    typedUser = JSON.parse(JSON.stringify(user)) as {
       _id: string;
       name: string;
-      role: "ADMIN" | "USER";
+      role: "USER" | "ADMIN";
     };
+  }
+
+  if (!typedUser || typedUser.role !== "ADMIN") {
+    return redirect("/");
   }
   return (
     <div className={styles.layout}>
@@ -31,6 +35,4 @@ const Layout = async ({ children }: { readonly children: React.ReactNode }) => {
       </section>
     </div>
   );
-};
-
-export default Layout;
+}

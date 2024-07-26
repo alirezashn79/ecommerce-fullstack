@@ -1,6 +1,6 @@
 import styles from "@/styles/p-user/index.module.css";
 import { getUserId } from "@/utils/serverHelpers";
-import Box from "components/templates/p-user/index/box";
+import Box from "components/modules/info-box/box";
 import Orders from "components/templates/p-user/index/orders";
 import Tickets from "components/templates/p-user/index/tickets";
 import commentModel from "models/Comment";

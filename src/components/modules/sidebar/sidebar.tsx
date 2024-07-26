@@ -1,16 +1,13 @@
-"use client";
-
-import client from "configs/client";
+import Logout from "components/modules/logout/logout";
+import { headers } from "next/headers";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { FaComments, FaHeart, FaShoppingBag, FaUsers } from "react-icons/fa";
 import { ImReply } from "react-icons/im";
-import { MdLogout, MdOutlineAttachMoney, MdSms } from "react-icons/md";
+import { MdOutlineAttachMoney, MdSms } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
-import swal from "sweetalert";
 import styles from "./sidebar.module.css";
 
-const Sidebar = ({
+export default async function Sidebar({
   user,
 }: {
   user?: {
@@ -18,32 +15,17 @@ const Sidebar = ({
     name: string;
     role: "ADMIN" | "USER";
   };
-}) => {
-  const path = usePathname();
+}) {
+  const header = headers();
+  const path = header.get("next-url");
 
-  const logoutHandler = () => {
-    swal({
-      title: "آیا از خروج اطمینان دارید؟",
-      icon: "warning",
-      buttons: ["نه", "آره"],
-    }).then(async (result) => {
-      if (result) {
-        await client.get("/auth/signout");
-        swal({
-          buttons: "باش",
-          icon: "success",
-          title: "خروج با موفقیت",
-        }).then(() => location.replace("/"));
-      }
-    });
-  };
   return (
     <aside className={styles.sidebar}>
       <div className={styles.sidebar_header}>
-        <p>خوش اومدی {user?.name} عزیز</p>
+        <p>خوش اومدی {user.name}</p>
       </div>
       <ul className={styles.sidebar_main}>
-        {path.includes("/p-user") ? (
+        {path && path === "/p-user" ? (
           <>
             <Link href={"/p-user"} className={styles.sidebar_link_active}>
               <ImReply />
@@ -101,12 +83,7 @@ const Sidebar = ({
           </>
         )}
       </ul>
-      <div className={styles.logout} onClick={logoutHandler}>
-        <MdLogout />
-        خروج
-      </div>
+      <Logout />
     </aside>
   );
-};
-
-export default Sidebar;
+}
