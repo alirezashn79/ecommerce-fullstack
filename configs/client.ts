@@ -6,6 +6,12 @@ const client = axios.create({
   baseURL: baseURL,
 });
 
+client.interceptors.request.use((req) => {
+  req.baseURL = req.baseURL?.concat("/api");
+  console.log("res", req.baseURL);
+  return req;
+});
+
 client.interceptors.response.use(
   (res) => res,
   (error) => {

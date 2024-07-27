@@ -6,6 +6,7 @@ import { ImReply } from "react-icons/im";
 import { MdOutlineAttachMoney, MdSms } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
 import styles from "./sidebar.module.css";
+import { baseURL } from "configs/baseUrl";
 
 export default async function Sidebar({
   user,
@@ -17,15 +18,17 @@ export default async function Sidebar({
   };
 }) {
   const header = headers();
-  const path = header.get("next-url");
+  const url = header.get("x-url");
+
+  const path = url?.split(baseURL)[1];
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.sidebar_header}>
-        <p>خوش اومدی {user.name}</p>
+        <p>خوش اومدی {user?.name}</p>
       </div>
       <ul className={styles.sidebar_main}>
-        {path && path === "/p-user" ? (
+        {path == "/p-user" ? (
           <>
             <Link href={"/p-user"} className={styles.sidebar_link_active}>
               <ImReply />

@@ -3,8 +3,8 @@ import Box from "components/modules/info-box/box";
 import ticketModel from "models/Ticket";
 import productModel from "models/Product";
 import userModel from "models/User";
-import SaleChart from "components/templates/p-admin/sale-chart";
-import GrowthChart from "@/components/templates/p-admin/growth-chart";
+import SaleChart from "@/components/templates/p-admin/index/sale-chart";
+import GrowthChart from "@/components/templates/p-admin/index/growth-chart";
 
 export default async function AdminHomePage() {
   const ticketsLength = await ticketModel.countDocuments();
