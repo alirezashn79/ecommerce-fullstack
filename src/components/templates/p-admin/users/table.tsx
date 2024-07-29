@@ -1,10 +1,9 @@
 "use client";
-import { toast } from "react-toastify";
-import styles from "./table.module.css";
-import { isValidObjectId } from "mongoose";
 import client from "configs/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import styles from "./table.module.css";
 
 interface ITable {
   title: string;
@@ -13,9 +12,15 @@ interface ITable {
     name: string;
     role: string;
     email: string;
+    phone: string;
+  }[];
+  bannedUsers: {
+    _id: string;
+    email: string;
+    phone: string;
   }[];
 }
-export default function Table({ title, users }: ITable) {
+export default function Table({ title, users, bannedUsers }: ITable) {
   const [loading, setLoading] = useState(false);
   const { refresh } = useRouter();
 
@@ -48,6 +53,52 @@ export default function Table({ title, users }: ITable) {
           refresh();
           swal({
             title: `کاربر ${name} حذف شد`,
+            icon: "success",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
+  const handleBanUser = async (email: string, phone: string, name: string) => {
+    swal({
+      title: `کاربر ${name} بن شود؟`,
+      icon: "warning",
+      buttons: ["خیر", "بله"],
+    }).then(async (result) => {
+      if (result) {
+        try {
+          await client.post("/user/ban", { email, phone });
+          refresh();
+          swal({
+            title: `کاربر ${name} بن شد`,
+            icon: "success",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
+  const handleRemoveFromBanList = async (
+    email: string,
+    phone: string,
+    name: string
+  ) => {
+    swal({
+      title: `کاربر ${name} از لیست بن خارج شود؟`,
+      icon: "warning",
+      buttons: ["خیر", "بله"],
+    }).then(async (result) => {
+      if (result) {
+        try {
+          await client.put(`/user/ban`, { email, phone });
+          refresh();
+          swal({
+            title: `کاربر ${name} از لیست بن خارج شد`,
             icon: "success",
           });
         } catch (error) {
@@ -110,9 +161,33 @@ export default function Table({ title, users }: ITable) {
                   </button>
                 </td>
                 <td>
-                  <button type="button" className={styles.delete_btn}>
-                    بن
-                  </button>
+                  {bannedUsers.findIndex(
+                    (it) => it.email === item.email || it.phone === item.phone
+                  ) === -1 ? (
+                    <button
+                      onClick={() =>
+                        handleBanUser(item.email, item.phone, item.name)
+                      }
+                      type="button"
+                      className={styles.delete_btn}
+                    >
+                      بن کردن
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        handleRemoveFromBanList(
+                          item.email,
+                          item.phone,
+                          item.name
+                        )
+                      }
+                      type="button"
+                      className={styles.delete_btn}
+                    >
+                      حذف بن
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
