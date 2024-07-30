@@ -1,6 +1,6 @@
+import Topbar from "@/components/modules/topbar/topbar";
 import { authUser } from "@/utils/serverHelpers";
 import Sidebar from "components/modules/sidebar/sidebar";
-import Topbar from "@/components/modules/topbar/topbar";
 import { redirect } from "next/navigation";
 import React from "react";
 import styles from "styles/p-user/userPanelLayout.module.css";

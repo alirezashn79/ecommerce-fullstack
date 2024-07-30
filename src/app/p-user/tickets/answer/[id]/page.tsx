@@ -1,9 +1,7 @@
-import styles from "styles/p-user/answerTicket.module.css";
-import Link from "next/link";
 import Answer from "components/templates/p-user/tickets/Answer";
 import ticketModel from "models/Ticket";
-import { toast } from "react-toastify";
-import { Model } from "mongoose";
+import Link from "next/link";
+import styles from "styles/p-user/answerTicket.module.css";
 interface ITicket {
   _id: string;
   title: string;
@@ -26,7 +24,7 @@ interface ITicket {
   };
 }
 const page = async ({ params }: { params: { id: string } }) => {
-  const ticket = await ticketModel
+  const ticket = (await ticketModel
     .findById(params.id, "-department -subDepartment -priority -updatedAt -__v")
     .populate("user", "name role")
     .populate({
@@ -43,8 +41,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         },
       ],
     })
-    .lean()
-    .orFail();
+    .lean()) as ITicket;
 
   return (
     <main className={styles.container}>
