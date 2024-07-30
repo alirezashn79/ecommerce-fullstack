@@ -1,7 +1,3 @@
-import connectToDB from "configs/db";
-import departmentModel from "models/Department";
-import subDepartmentModel from "models/SubDepartment";
-import ticketModel from "models/Ticket";
 import { Types } from "mongoose";
 import { object, z } from "zod";
 
