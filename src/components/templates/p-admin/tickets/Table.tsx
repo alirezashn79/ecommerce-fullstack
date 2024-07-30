@@ -1,19 +1,33 @@
 "use client";
 import client from "configs/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "react-toastify";
 import styles from "./table.module.css";
-import ModalComponent from "components/modules/react-modal/Modal";
 
 interface ITable {
   title: string;
-  users: {
+  tickets: {
     _id: string;
-    name: string;
-    role: string;
-    email: string;
-    phone: string;
+    title: string;
+    user: {
+      _id: string;
+      name: string;
+      email: string;
+      phone: string;
+    };
+    department: {
+      _id: string;
+      title: string;
+    };
+    subDepartment: {
+      _id: string;
+      title: string;
+    };
+    priority: string;
+    body: string;
+    hasAnswered: boolean;
+    createdAt: Date;
+    answer: string;
+    isAnswer: boolean;
   }[];
   bannedUsers: {
     _id: string;
@@ -21,48 +35,8 @@ interface ITable {
     phone: string;
   }[];
 }
-export default function Table({ title, users, bannedUsers }: ITable) {
-  const [loading, setLoading] = useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+export default function Table({ title, tickets, bannedUsers }: ITable) {
   const { refresh } = useRouter();
-
-  const toggleRoleHandler = async (id: string) => {
-    try {
-      setLoading(true);
-      const res = await client.put("/user/role", {
-        id,
-      });
-      toast.success(res.data.message);
-      refresh();
-    } catch (error) {
-      if (error.response) {
-        toast.error(error.response.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRemoveUser = async (id: string, name: string) => {
-    swal({
-      title: `کاربر ${name} حذف شود؟`,
-      icon: "warning",
-      buttons: ["خیر", "بله"],
-    }).then(async (result) => {
-      if (result) {
-        try {
-          await client.delete(`/user/${id}`);
-          refresh();
-          swal({
-            title: `کاربر ${name} حذف شد`,
-            icon: "success",
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    });
-  };
 
   const handleBanUser = async (email: string, phone: string, name: string) => {
     swal({
@@ -110,6 +84,17 @@ export default function Table({ title, users, bannedUsers }: ITable) {
     });
   };
 
+  const showTicket = (title: string, body: string) => {
+    swal({
+      title: title,
+      text: body,
+      closeOnClickOutside: true,
+      closeOnEsc: true,
+      //   dangerMode: true,
+      icon: "info",
+    });
+  };
+
   return (
     <div>
       <div>
@@ -122,57 +107,60 @@ export default function Table({ title, users, bannedUsers }: ITable) {
           <thead>
             <tr>
               <th>شناسه</th>
-              <th>نام و نام خانوادگی</th>
-              <th>ایمیل</th>
-              <th>نقش</th>
-              <th>ویرایش</th>
-              <th>تغییر سطح</th>
-              <th>حذف</th>
+              <th>عنوان</th>
+              <th>کاربر</th>
+              <th>دپارتمان</th>
+              <th>زیر دپارتمان</th>
+              <th>تاریخ ثبت</th>
+              <th>وضعیت</th>
+              <th>مشاهده متن</th>
+              <th>پاسخ</th>
               <th>بن</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((item) => (
+            {tickets.map((item) => (
               <tr key={item._id}>
-                <td>{item._id}</td>
-                <td>{item.name}</td>
-                <td>{item.email || "---------------------------"}</td>
-                <td>{item.role === "USER" ? "کاربر" : "مدیر"}</td>
+                <td>{item._id.slice(16)}</td>
+                <td>{item.title}</td>
+                <td>{item.user.name}</td>
+                <td>{item.department.title}</td>
+                <td>{item.subDepartment.title}</td>
+
+                <td>{new Date(item.createdAt).toLocaleString("fa-IR")}</td>
+                <td>{item.hasAnswered ? "پاسخ داده شده" : "بدون پاسخ"}</td>
+
                 <td>
                   <button
-                    onClick={() => setIsOpenModal(true)}
+                    onClick={() => showTicket(item.title, item.body)}
                     type="button"
                     className={styles.edit_btn}
                   >
-                    ویرایش
+                    مشاهده
                   </button>
                 </td>
                 <td>
                   <button
-                    disabled={loading}
-                    onClick={() => toggleRoleHandler(item._id)}
-                    type="button"
-                    className={styles.edit_btn}
-                  >
-                    تغییر نقش
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => handleRemoveUser(item._id, item.name)}
+                    // onClick={() => handleRemoveUser(item._id, item.name)}
                     type="button"
                     className={styles.delete_btn}
                   >
-                    حذف
+                    پاسخ
                   </button>
                 </td>
                 <td>
                   {bannedUsers.findIndex(
-                    (it) => it.email === item.email || it.phone === item.phone
+                    (it) =>
+                      it.email === item.user.email ||
+                      it.phone === item.user.phone
                   ) === -1 ? (
                     <button
                       onClick={() =>
-                        handleBanUser(item.email, item.phone, item.name)
+                        handleBanUser(
+                          item.user.email,
+                          item.user.phone,
+                          item.user.name
+                        )
                       }
                       type="button"
                       className={styles.delete_btn}
@@ -183,9 +171,9 @@ export default function Table({ title, users, bannedUsers }: ITable) {
                     <button
                       onClick={() =>
                         handleRemoveFromBanList(
-                          item.email,
-                          item.phone,
-                          item.name
+                          item.user.email,
+                          item.user.phone,
+                          item.user.name
                         )
                       }
                       type="button"
@@ -200,10 +188,6 @@ export default function Table({ title, users, bannedUsers }: ITable) {
           </tbody>
         </table>
       </div>
-
-      <ModalComponent isOpen={isOpenModal} setIsOpen={setIsOpenModal}>
-        <form>s</form>
-      </ModalComponent>
     </div>
   );
 }

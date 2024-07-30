@@ -12,7 +12,7 @@ type TTicket = Omit<
   user: Types.ObjectId;
   department: Types.ObjectId;
   subDepartment: Types.ObjectId;
-  answer: Types.ObjectId;
+  answer?: Types.ObjectId;
 };
 
 const schema = new Schema<TTicket>(
@@ -46,7 +46,7 @@ const schema = new Schema<TTicket>(
       type: String,
       required: true,
     },
-    hasAnswered: {
+    isAnswered: {
       type: Boolean,
       default: false,
     },

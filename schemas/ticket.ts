@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { z } from "zod";
+import { object, z } from "zod";
 
 export const zTicketSchema = z.object({
   title: z.string().trim().min(4),
@@ -19,10 +19,33 @@ export const zTicketSchema = z.object({
     message: "اولویت الزامی است",
   }),
   body: z.string().trim().min(6),
-  hasAnswered: z.boolean().default(false),
-  answer: z
+  isAnswered: z.boolean().default(false),
+});
+
+export const zAnswerTicketSchema = object({
+  body: z.string().trim().min(6),
+  department: z
     .string()
-    .refine((value) => Types.ObjectId.isValid(value))
-    .optional()
-    .nullable(),
+    .refine(
+      (value) => Types.ObjectId.isValid(value),
+      "لطفا یک دپارتمان را انتخاب کنید"
+    ),
+  subDepartment: z
+    .string()
+    .refine(
+      (value) => Types.ObjectId.isValid(value),
+      "لطفا یک واحد را انتخاب کنید"
+    ),
+  user: z
+    .string()
+    .refine(
+      (value) => Types.ObjectId.isValid(value),
+      "لطفا یک واحد را انتخاب کنید"
+    ),
+  ticket: z
+    .string()
+    .refine(
+      (value) => Types.ObjectId.isValid(value),
+      "لطفا یک واحد را انتخاب کنید"
+    ),
 });
