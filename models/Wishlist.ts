@@ -1,26 +1,33 @@
-import { model, models, Schema, Types } from "mongoose";
+import mongoose from "mongoose";
 import "./Product";
 import "./User";
 
 interface IWishlistModelSchema {
-  user: Types.ObjectId;
-  product: Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  product: mongoose.Types.ObjectId;
 }
 
-const wishlistSchema = new Schema<IWishlistModelSchema>({
+const wishlistSchema = new mongoose.Schema<IWishlistModelSchema>({
   user: {
-    type: Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: "User",
     required: true,
   },
   product: {
-    type: Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: "Product",
     required: true,
   },
 });
 
-const wishListModel =
-  models.Wishlist || model<IWishlistModelSchema>("Wishlist", wishlistSchema);
+let wishListModel: mongoose.Model<IWishlistModelSchema>;
 
+try {
+  wishListModel = mongoose.model<IWishlistModelSchema>("Wishlist");
+} catch (error) {
+  wishListModel = mongoose.model<IWishlistModelSchema>(
+    "Wishlist",
+    wishlistSchema
+  );
+}
 export default wishListModel;

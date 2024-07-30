@@ -16,7 +16,6 @@ export default function Logout() {
       if (result) {
         await client.get("/auth/signout");
         swal({
-          buttons: ["باش", ""],
           icon: "success",
           title: "خروج با موفقیت",
         }).then(() => {

@@ -1,23 +1,28 @@
-import { model, models, Types, Schema } from "mongoose";
+import mongoose from "mongoose";
 
 interface ISubDepartment {
   title: string;
-  department: Types.ObjectId;
+  department: mongoose.Types.ObjectId;
 }
 
-const schema = new Schema<ISubDepartment>({
+const schema = new mongoose.Schema<ISubDepartment>({
   title: {
     type: String,
     required: true,
   },
   department: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
     required: true,
   },
 });
 
-const subDepartmentModel =
-  models.SubDepartment || model<ISubDepartment>("SubDepartment", schema);
+let subDepartmentModel: mongoose.Model<ISubDepartment>;
+
+try {
+  subDepartmentModel = mongoose.model<ISubDepartment>("SubDepartment");
+} catch (error) {
+  subDepartmentModel = mongoose.model<ISubDepartment>("SubDepartment", schema);
+}
 
 export default subDepartmentModel;

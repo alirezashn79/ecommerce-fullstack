@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { zTicketSchema } from "schemas/ticket";
 import { TypeOf } from "zod";
 import "./AnswerTicket";
@@ -10,30 +10,30 @@ type TTicket = Omit<
   TypeOf<typeof zTicketSchema>,
   "department" | "subDepartment" | "user" | "answer"
 > & {
-  user: Types.ObjectId;
-  department: Types.ObjectId;
-  subDepartment: Types.ObjectId;
-  answer?: Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  department: mongoose.Types.ObjectId;
+  subDepartment: mongoose.Types.ObjectId;
+  answer?: mongoose.Types.ObjectId;
 };
 
-const schema = new Schema<TTicket>(
+const schema = new mongoose.Schema<TTicket>(
   {
     title: {
       type: String,
       required: true,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     department: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
       required: true,
     },
     subDepartment: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "SubDepartment",
       required: true,
     },
@@ -52,7 +52,7 @@ const schema = new Schema<TTicket>(
       default: false,
     },
     answer: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "AnswerTicket",
       required: false,
     },
@@ -62,6 +62,12 @@ const schema = new Schema<TTicket>(
   }
 );
 
-const ticketModel = models.Ticket || model<TTicket>("Ticket", schema);
+let ticketModel: Model<TTicket>;
+
+try {
+  ticketModel = mongoose.model<TTicket>("Ticket");
+} catch (error) {
+  ticketModel = mongoose.model<TTicket>("Ticket", schema);
+}
 
 export default ticketModel;

@@ -1,15 +1,15 @@
-import { model, models, Schema, Types } from "mongoose";
+import mongoose from "mongoose";
 import { zCommentSchema } from "schemas/comment";
 import { TypeOf } from "zod";
 import "./Product";
 import "./User";
 
 type TCommentSchema = Omit<TypeOf<typeof zCommentSchema>, "product"> & {
-  product: Types.ObjectId;
-  user: Types.ObjectId;
+  product: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
 };
 
-const commentSchema = new Schema<TCommentSchema>({
+const commentSchema = new mongoose.Schema<TCommentSchema>({
   username: {
     type: String,
     required: true,
@@ -36,18 +36,22 @@ const commentSchema = new Schema<TCommentSchema>({
     default: false,
   },
   product: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
     required: true,
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
 });
 
-const commentModel =
-  models.Comment || model<TCommentSchema>("Comment", commentSchema);
+let commentModel: mongoose.Model<TCommentSchema>;
+try {
+  commentModel = mongoose.model<TCommentSchema>("Comment");
+} catch (error) {
+  commentModel = mongoose.model<TCommentSchema>("Comment", commentSchema);
+}
 
 export default commentModel;

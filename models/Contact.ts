@@ -1,7 +1,7 @@
-import { model, Schema, models } from "mongoose";
+import mongoose from "mongoose";
 import { TContact } from "types/types";
 
-const schema = new Schema<TContact>({
+const schema = new mongoose.Schema<TContact>({
   name: {
     type: String,
     required: true,
@@ -23,6 +23,12 @@ const schema = new Schema<TContact>({
   },
 });
 
-const contactModel = models.Contact || model<TContact>("Contact", schema);
+let contactModel: mongoose.Model<TContact>;
+
+try {
+  contactModel = mongoose.model<TContact>("Contact");
+} catch (error) {
+  contactModel = mongoose.model<TContact>("Contact", schema);
+}
 
 export default contactModel;
