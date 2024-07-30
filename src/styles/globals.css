@@ -131,6 +131,7 @@ a {
 .swal-modal {
   background: #ffffff !important;
   border: 1px solid #711d1c;
+  direction: rtl;
 }
 
 .swal-title {

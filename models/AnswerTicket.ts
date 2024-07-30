@@ -1,14 +1,18 @@
-import { model, models, Schema } from "mongoose";
-import { zAnswerTicketSchema } from "schemas/ticket";
-import { TypeOf } from "zod";
+import { model, models, Schema, Types } from "mongoose";
 import "./Department";
 import "./SubDepartment";
 import "./Ticket";
 import "./User";
 
-type TAnswerTicket = TypeOf<typeof zAnswerTicketSchema>;
+interface IAnswerTicket {
+  body: string;
+  department: Types.ObjectId;
+  subDepartment: Types.ObjectId;
+  ticket: Types.ObjectId;
+  user: Types.ObjectId;
+}
 
-const schema = new Schema<TAnswerTicket>(
+const schema = new Schema<IAnswerTicket>(
   {
     body: {
       type: String,
@@ -41,6 +45,6 @@ const schema = new Schema<TAnswerTicket>(
 );
 
 const answerTicketModel =
-  models.AnswerTicket || model<TAnswerTicket>("AnswerTicket", schema);
+  models.AnswerTicket || model<IAnswerTicket>("AnswerTicket", schema);
 
 export default answerTicketModel;

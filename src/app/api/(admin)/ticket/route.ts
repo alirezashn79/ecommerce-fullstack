@@ -1,3 +1,4 @@
+import connectToDB from "configs/db";
 import answerTicketModel from "models/AnswerTicket";
 import ticketModel from "models/Ticket";
 import { zAnswerTicketSchema } from "schemas/ticket";
@@ -33,7 +34,9 @@ export async function POST(req: Request) {
 
     const reqBody = await req.json();
 
-    const validationResult = zAnswerTicketSchema.safeParse(reqBody);
+    await connectToDB();
+
+    const validationResult = await zAnswerTicketSchema.safeParseAsync(reqBody);
 
     if (!validationResult.success) {
       return Response.json(
@@ -47,7 +50,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const answer = await answerTicketModel.create(validationResult.data);
+    const answer = await answerTicketModel.create({
+      ...validationResult.data,
+      user: typedUser._id,
+    });
     await ticketModel.findByIdAndUpdate(validationResult.data.ticket, {
       isAnswered: true,
       $set: {
@@ -56,7 +62,7 @@ export async function POST(req: Request) {
     });
 
     return Response.json(
-      { essage: "Ticket response was recorded" },
+      { message: "Ticket response was recorded" },
       { status: 201 }
     );
   } catch (error) {

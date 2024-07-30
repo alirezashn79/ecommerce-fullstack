@@ -5,15 +5,11 @@ import React from "react";
 
 export default async function TicketsPage() {
   const tickets = await ticketModel
-    .find(
-      {
-        $nor: [{ isAnswer: true }],
-      },
-      "-updatedAt -__v"
-    )
+    .find({}, "-updatedAt -__v")
     .populate("user", "name email phone")
     .populate("department", "title")
     .populate("subDepartment", "title")
+    .populate("answer", "body")
     .lean();
 
   const bannedUsers = await banModel.find({}, "email phone");

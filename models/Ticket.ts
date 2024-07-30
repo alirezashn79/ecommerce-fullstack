@@ -1,9 +1,10 @@
 import { model, models, Schema, Types } from "mongoose";
+import { zTicketSchema } from "schemas/ticket";
+import { TypeOf } from "zod";
+import "./AnswerTicket";
 import "./Department";
 import "./SubDepartment";
 import "./User";
-import { TypeOf } from "zod";
-import { zTicketSchema } from "schemas/ticket";
 
 type TTicket = Omit<
   TypeOf<typeof zTicketSchema>,
@@ -52,7 +53,7 @@ const schema = new Schema<TTicket>(
     },
     answer: {
       type: Schema.Types.ObjectId,
-      ref: "Ticket",
+      ref: "AnswerTicket",
       required: false,
     },
   },

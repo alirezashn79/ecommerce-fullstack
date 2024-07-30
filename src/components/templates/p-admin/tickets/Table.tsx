@@ -2,6 +2,7 @@
 import client from "configs/client";
 import { useRouter } from "next/navigation";
 import styles from "./table.module.css";
+import { toast } from "react-toastify";
 
 interface ITable {
   title: string;
@@ -24,10 +25,12 @@ interface ITable {
     };
     priority: string;
     body: string;
-    hasAnswered: boolean;
+
     createdAt: Date;
-    answer: string;
-    isAnswer: boolean;
+    isAnswered: boolean;
+    answer: {
+      body: string;
+    };
   }[];
   bannedUsers: {
     _id: string;
@@ -95,6 +98,51 @@ export default function Table({ title, tickets, bannedUsers }: ITable) {
     });
   };
 
+  const showTicketAnswer = ({ ticketAnswer }: { ticketAnswer: string }) => {
+    swal({
+      title: "پاسخ:",
+      text: ticketAnswer,
+      closeOnClickOutside: true,
+      closeOnEsc: true,
+      //   dangerMode: true,
+      icon: "info",
+    });
+  };
+
+  const handleAnswerToTicket = async ({
+    ticket,
+    department,
+    subDepartment,
+  }: {
+    ticket: string;
+    department: string;
+    subDepartment: string;
+  }) => {
+    swal({
+      title: "پاسخ را وارد کنید.",
+      content: {
+        element: "input",
+      },
+    }).then(async (result) => {
+      if (!!result) {
+        const answer = {
+          body: result,
+          department,
+          subDepartment,
+          ticket,
+        };
+        try {
+          await client.post("/ticket", answer);
+          toast.success("پاسخ تیکت با موفقیت ثبت شد");
+          refresh();
+        } catch (error) {
+          console.log(error);
+          toast.error("خطا در ثبت پاسخ تیکت");
+        }
+      }
+    });
+  };
+
   return (
     <div>
       <div>
@@ -112,8 +160,8 @@ export default function Table({ title, tickets, bannedUsers }: ITable) {
               <th>دپارتمان</th>
               <th>زیر دپارتمان</th>
               <th>تاریخ ثبت</th>
-              <th>وضعیت</th>
               <th>مشاهده متن</th>
+              <th>وضعیت</th>
               <th>پاسخ</th>
               <th>بن</th>
             </tr>
@@ -128,7 +176,6 @@ export default function Table({ title, tickets, bannedUsers }: ITable) {
                 <td>{item.subDepartment.title}</td>
 
                 <td>{new Date(item.createdAt).toLocaleString("fa-IR")}</td>
-                <td>{item.hasAnswered ? "پاسخ داده شده" : "بدون پاسخ"}</td>
 
                 <td>
                   <button
@@ -139,9 +186,31 @@ export default function Table({ title, tickets, bannedUsers }: ITable) {
                     مشاهده
                   </button>
                 </td>
+
+                <td>
+                  {item.isAnswered ? (
+                    <button
+                      onClick={() =>
+                        showTicketAnswer({ ticketAnswer: item.answer.body })
+                      }
+                      type="button"
+                      className={styles.edit_btn}
+                    >
+                      مشاهده پاسخ
+                    </button>
+                  ) : (
+                    "بدون پاسخ"
+                  )}
+                </td>
                 <td>
                   <button
-                    // onClick={() => handleRemoveUser(item._id, item.name)}
+                    onClick={() =>
+                      handleAnswerToTicket({
+                        department: item.department._id,
+                        subDepartment: item.subDepartment._id,
+                        ticket: item._id,
+                      })
+                    }
                     type="button"
                     className={styles.delete_btn}
                   >
