@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import { model, models, Schema } from "mongoose";
 
 interface IBan {
   email?: string;
   phone?: string;
 }
 
-const schema = new mongoose.Schema<IBan>(
+const schema = new Schema<IBan>(
   {
     email: String,
     phone: String,
@@ -15,12 +15,6 @@ const schema = new mongoose.Schema<IBan>(
   }
 );
 
-let banModel: mongoose.Model<IBan>;
-
-try {
-  banModel = mongoose.model<IBan>("Ban");
-} catch (error) {
-  banModel = mongoose.model<IBan>("Ban", schema);
-}
+const banModel = models.Ban || model<IBan>("Ban", schema);
 
 export default banModel;

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 import "./Department";
 import "./SubDepartment";
 import "./Ticket";
@@ -6,35 +6,35 @@ import "./User";
 
 interface IAnswerTicket {
   body: string;
-  department: mongoose.Types.ObjectId;
-  subDepartment: mongoose.Types.ObjectId;
-  ticket: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
+  department: Types.ObjectId;
+  subDepartment: Types.ObjectId;
+  ticket: Types.ObjectId;
+  user: Types.ObjectId;
 }
 
-const schema = new mongoose.Schema<IAnswerTicket>(
+const schema = new Schema<IAnswerTicket>(
   {
     body: {
       type: String,
       required: true,
     },
     department: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Department",
       required: true,
     },
     subDepartment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "SubDepartment",
       required: true,
     },
     ticket: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Ticket",
       required: true,
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -44,12 +44,7 @@ const schema = new mongoose.Schema<IAnswerTicket>(
   }
 );
 
-let answerTicketModel: mongoose.Model<IAnswerTicket>;
-
-try {
-  answerTicketModel = mongoose.model<IAnswerTicket>("AnswerTicket");
-} catch (error) {
-  answerTicketModel = mongoose.model<IAnswerTicket>("AnswerTicket", schema);
-}
+const answerTicketModel =
+  models.AnswerTicket || model<IAnswerTicket>("AnswerTicket", schema);
 
 export default answerTicketModel;

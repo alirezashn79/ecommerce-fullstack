@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import { Schema, model, models } from "mongoose";
 import { TUser } from "types/auth";
 
-const userSchema = new mongoose.Schema<TUser>(
+const userSchema = new Schema<TUser>(
   {
     name: {
       type: String,
@@ -26,12 +26,6 @@ const userSchema = new mongoose.Schema<TUser>(
     timestamps: true,
   }
 );
-let userModel: mongoose.Model<TUser>;
-
-try {
-  userModel = mongoose.model<TUser>("User");
-} catch (error) {
-  userModel = mongoose.model<TUser>("User", userSchema);
-}
+const userModel = models.User || model<TUser>("User", userSchema);
 
 export default userModel;

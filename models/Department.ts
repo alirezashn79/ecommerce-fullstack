@@ -1,19 +1,17 @@
-import mongoose from "mongoose";
+import { model, models, Schema } from "mongoose";
 
 interface IDepartment {
   title: string;
 }
 
-const schema = new mongoose.Schema<IDepartment>({
+const schema = new Schema<IDepartment>({
   title: {
     type: String,
     required: true,
   },
 });
-let departmentModel: mongoose.Model<IDepartment>;
-try {
-  departmentModel = mongoose.model<IDepartment>("Department");
-} catch (err) {
-  departmentModel = mongoose.model<IDepartment>("Department", schema);
-}
+
+const departmentModel =
+  models.Department || model<IDepartment>("Department", schema);
+
 export default departmentModel;

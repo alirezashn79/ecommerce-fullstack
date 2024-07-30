@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 import { ZProductSchema } from "schemas/products";
 import { infer } from "zod";
 import "./Comment";
@@ -17,10 +17,10 @@ import "./Comment";
 // }
 
 interface IProductSchema extends infer<typeof ZProductSchema> {
-  comments: mongoose.Types.ObjectId[];
+  comments: Types.ObjectId[];
 }
 
-const productSchema = new mongoose.Schema<IProductSchema>({
+const productSchema = new Schema<IProductSchema>({
   name: {
     type: String,
     required: true,
@@ -64,18 +64,14 @@ const productSchema = new mongoose.Schema<IProductSchema>({
   comments: {
     type: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Comment",
       },
     ],
   },
 });
 
-let productModel: mongoose.Model<IProductSchema>;
-try {
-  productModel = mongoose.model<IProductSchema>("Product");
-} catch (error) {
-  productModel = mongoose.model<IProductSchema>("Product", productSchema);
-}
+const productModel =
+  models.Product || model<IProductSchema>("Product", productSchema);
 
 export default productModel;
