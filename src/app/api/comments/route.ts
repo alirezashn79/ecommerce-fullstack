@@ -8,14 +8,20 @@ export async function POST(req: Request) {
   try {
     const user = await authUser();
 
-    if (!user) {
+    let typedUser;
+    if (!user || typeof user !== "object") {
       return Response.json(
-        { message: "you are not login...!" },
+        { message: "You are not login yet...!" },
         {
           status: 401,
         }
       );
     }
+
+    typedUser = user as {
+      _id: string;
+      role: "ADMIN" | "USER";
+    };
 
     const reqBody = await req.json();
 
@@ -49,7 +55,7 @@ export async function POST(req: Request) {
 
     const comment = await commentModel.create({
       ...validationResult.data,
-      user: user._id,
+      user: typedUser._id,
     });
 
     // const totalScore = Math.ceil(

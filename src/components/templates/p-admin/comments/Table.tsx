@@ -86,6 +86,34 @@ export default function Table({ title, comments, bannedUsers }: ITable) {
     });
   };
 
+  const handleAcceptComment = async (id: string) => {
+    try {
+      const res = await client.put("/comments/accept", { id });
+      toast.success(res.data.message);
+      refresh();
+    } catch (error) {
+      if (error.response) {
+        toast.error(
+          `${error.response.data.message} code: ${error.response.status}`
+        );
+      }
+    }
+  };
+
+  const handleRejectComment = async (id: string) => {
+    try {
+      const res = await client.put("/comments/reject", { id });
+      toast.success(res.data.message);
+      refresh();
+    } catch (error) {
+      if (error.response) {
+        toast.error(
+          `${error.response.data.message} code: ${error.response.status}`
+        );
+      }
+    }
+  };
+
   return (
     <div>
       <div>
@@ -130,11 +158,19 @@ export default function Table({ title, comments, bannedUsers }: ITable) {
                 <td>{item.isAccepted ? "تایید شده" : "تایید نشده"}</td>
                 <td>
                   {item.isAccepted ? (
-                    <button type="button" className={styles.edit_btn}>
+                    <button
+                      onClick={() => handleRejectComment(item._id)}
+                      type="button"
+                      className={styles.edit_btn}
+                    >
                       رد
                     </button>
                   ) : (
-                    <button type="button" className={styles.edit_btn}>
+                    <button
+                      onClick={() => handleAcceptComment(item._id)}
+                      type="button"
+                      className={styles.edit_btn}
+                    >
                       تایید
                     </button>
                   )}
