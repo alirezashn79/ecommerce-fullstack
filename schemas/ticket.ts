@@ -28,31 +28,7 @@ export const zTicketSchema = z.object({
 
 export const zAnswerTicketSchema = object({
   body: z.string().trim().min(6),
-  department: z.string().refine(async (value) => {
-    if (!Types.ObjectId.isValid(value)) return false;
-
-    const isExist = await departmentModel.exists({ _id: value });
-
-    if (!isExist) return false;
-
-    return true;
-  }),
-  subDepartment: z.string().refine(async (value) => {
-    if (!Types.ObjectId.isValid(value)) return false;
-
-    const isExist = await subDepartmentModel.exists({ _id: value });
-
-    if (!isExist) return false;
-
-    return true;
-  }),
-  ticket: z.string().refine(async (value) => {
-    if (!Types.ObjectId.isValid(value)) return false;
-
-    const isExist = await ticketModel.exists({ _id: value });
-
-    if (!isExist) return false;
-
-    return true;
-  }),
+  department: z.string().refine((value) => Types.ObjectId.isValid(value)),
+  subDepartment: z.string().refine((value) => Types.ObjectId.isValid(value)),
+  ticket: z.string().refine((value) => Types.ObjectId.isValid(value)),
 });

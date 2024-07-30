@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   try {
     const user = await authUser();
 
-    let typedUser;
     if (!user || typeof user !== "object") {
       return Response.json(
         { message: "You are not login yet...!" },
@@ -18,12 +17,7 @@ export async function POST(req: Request) {
       );
     }
 
-    typedUser = user as {
-      _id: string;
-      role: "ADMIN" | "USER";
-    };
-
-    if (typedUser.role !== "ADMIN") {
+    if (user.role !== "ADMIN") {
       return Response.json(
         { message: "Only admins can perform this action" },
         {
@@ -52,7 +46,7 @@ export async function POST(req: Request) {
 
     const answer = await answerTicketModel.create({
       ...validationResult.data,
-      user: typedUser._id,
+      user: user._id,
     });
     await ticketModel.findByIdAndUpdate(validationResult.data.ticket, {
       isAnswered: true,

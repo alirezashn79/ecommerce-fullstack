@@ -1,16 +1,13 @@
 import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "configs/db";
 import departmentModel from "models/Department";
-import { NextRequest } from "next/server";
 import { zDepartmentSchema } from "schemas/department";
 
 export async function POST(req: Request) {
   try {
     const user = await authUser();
 
-    console.log(user);
-
-    if (!user) {
+    if (!user || typeof user !== "object") {
       return Response.json(
         {
           message: "you are not login",
@@ -21,15 +18,7 @@ export async function POST(req: Request) {
       );
     }
 
-    let typedUser;
-    if (typeof user === "object") {
-      typedUser = user as {
-        _id: string;
-        role: "ADMIN" | "USER";
-      };
-    }
-
-    if (typedUser?.role !== "ADMIN") {
+    if (user.role !== "ADMIN") {
       return Response.json(
         {
           message: "you are not allowed",

@@ -20,6 +20,11 @@ const Layout = async ({ children }: { readonly children: React.ReactNode }) => {
       role: "ADMIN" | "USER";
     };
   }
+
+  if (typedUser?.role === "ADMIN") {
+    return redirect("/p-admin");
+  }
+
   return (
     <div className={styles.layout}>
       <section className={styles.section}>

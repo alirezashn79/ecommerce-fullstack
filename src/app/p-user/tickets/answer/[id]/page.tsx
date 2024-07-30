@@ -2,6 +2,8 @@ import styles from "styles/p-user/answerTicket.module.css";
 import Link from "next/link";
 import Answer from "components/templates/p-user/tickets/Answer";
 import ticketModel from "models/Ticket";
+import { toast } from "react-toastify";
+import { Model } from "mongoose";
 interface ITicket {
   _id: string;
   title: string;
@@ -13,17 +15,36 @@ interface ITicket {
   body: string;
   hasAnswered: boolean;
   createdAt: Date;
-  answer?: ITicket;
+  answer?: {
+    body: string;
+    user: {
+      _id: string;
+      name: string;
+      role: string;
+    };
+    createdAt: Date;
+  };
 }
 const page = async ({ params }: { params: { id: string } }) => {
-  const ticket: ITicket = await ticketModel
+  const ticket = await ticketModel
     .findById(params.id, "-department -subDepartment -priority -updatedAt -__v")
     .populate("user", "name role")
-    .populate("answer");
+    .populate({
+      path: "answer",
 
-  console.log("tocket", ticket);
-
-  console.log(ticket.answer);
+      populate: [
+        {
+          path: "user",
+          select: "name role",
+        },
+        {
+          path: "department",
+          select: "title",
+        },
+      ],
+    })
+    .lean()
+    .orFail();
 
   return (
     <main className={styles.container}>
@@ -47,7 +68,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             type="ADMIN"
             info={{
               username: ticket.answer.user.name,
-              userRole: ticket.answer.user.role,
+              userRole: ticket.answer.user.role as "ADMIN",
               body: ticket.answer.body,
               creation: ticket.answer.createdAt,
             }}

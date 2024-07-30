@@ -11,7 +11,7 @@ const Answer = ({ type, info }: { type: "USER" | "ADMIN"; info: IAnswer }) => {
       className={type == "USER" ? styles.userTicket : styles.adminticket}
     >
       <div className={styles.ticket_main}>
-        <p>{new Date(info.creation).toLocaleDateString("fa-IR")}</p>
+        <p>{new Date(info.creation).toLocaleString("fa-IR")}</p>
         <div>
           <div>
             <p>{info.username}</p>

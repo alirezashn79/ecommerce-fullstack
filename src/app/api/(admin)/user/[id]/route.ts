@@ -15,7 +15,6 @@ export async function DELETE(
   try {
     const user = await authUser();
 
-    let typedUser;
     if (!user || typeof user !== "object") {
       return Response.json(
         { message: "You are not login yet...!" },
@@ -25,12 +24,7 @@ export async function DELETE(
       );
     }
 
-    typedUser = user as {
-      _id: string;
-      role: "ADMIN" | "USER";
-    };
-
-    if (typedUser.role !== "ADMIN") {
+    if (user.role !== "ADMIN") {
       return Response.json(
         { message: "Only admins can perform this action" },
         {

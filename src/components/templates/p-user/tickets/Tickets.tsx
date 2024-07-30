@@ -16,7 +16,7 @@ interface ITicketsProps {
       _id: string;
       title: string;
     };
-    hasAnswered: boolean;
+    isAnswered: boolean;
     createdAt: Date;
   }[];
 }

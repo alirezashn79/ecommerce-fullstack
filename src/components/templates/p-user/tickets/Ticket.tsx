@@ -12,7 +12,7 @@ interface ITicket {
       _id: string;
       title: string;
     };
-    hasAnswered: boolean;
+    isAnswered: boolean;
     createdAt: Date;
   };
 }
@@ -32,8 +32,8 @@ const Ticket = ({ ticket }: ITicket) => {
 
       <div>
         <p>{new Date(ticket.createdAt).toLocaleString("fa-IR")}</p>
-        <p className={ticket.hasAnswered ? styles.answer : styles.no_answer}>
-          {ticket.hasAnswered ? "پاسخ داده شده" : "در انتظار پاسخگویی"}
+        <p className={ticket.isAnswered ? styles.answer : styles.no_answer}>
+          {ticket.isAnswered ? "پاسخ داده شده" : "در انتظار پاسخگویی"}
         </p>
         {/* answer */}
       </div>

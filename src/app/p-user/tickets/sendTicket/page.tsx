@@ -74,6 +74,7 @@ const page = () => {
     };
     getSubDepartments();
   }, [watch("department")]);
+
   useEffect(() => {
     const getDepartments = async () => {
       const res = await client.get("/departments");
