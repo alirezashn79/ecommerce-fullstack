@@ -17,16 +17,18 @@ export default async function UsersPage() {
   );
 
   const bannedUsers = await banModel.find({}, "email phone");
-
+  const style = {};
   return (
     <main>
-      {/* <p className={styles.empty}>کاربری وجود ندارد</p> */}
-
-      <Table
-        bannedUsers={JSON.parse(JSON.stringify(bannedUsers))}
-        users={JSON.parse(JSON.stringify(users))}
-        title="لیست کاربران"
-      />
+      {users.length === 0 ? (
+        <p>کاربری وجود ندارد</p>
+      ) : (
+        <Table
+          bannedUsers={JSON.parse(JSON.stringify(bannedUsers))}
+          users={JSON.parse(JSON.stringify(users))}
+          title="لیست کاربران"
+        />
+      )}
     </main>
   );
 }

@@ -13,10 +13,12 @@ export default async function CommentsPage() {
   const bannedUsers = await banModel.find({}, "email phone");
 
   return (
-    <Table
-      title="لیست کامنت ها"
-      comments={JSON.parse(JSON.stringify(comments))}
-      bannedUsers={bannedUsers}
-    />
+    <main>
+      <Table
+        title="لیست کامنت ها"
+        comments={JSON.parse(JSON.stringify(comments))}
+        bannedUsers={bannedUsers}
+      />
+    </main>
   );
 }

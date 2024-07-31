@@ -26,10 +26,10 @@ const authUser = async () => {
       .findOne({ email: tokenPayload.email }, "name role")
       .lean();
 
-    if (!!user) {
-      return user;
+    if (!user) {
+      return false;
     }
-    return false;
+    return user;
   }
 };
 

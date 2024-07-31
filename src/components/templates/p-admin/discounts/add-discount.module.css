@@ -1,0 +1,56 @@
+.discount {
+  padding: 20px;
+}
+
+.discount_main {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: auto auto;
+}
+.discount_main div {
+  display: flex;
+  flex-direction: column;
+}
+.discount select {
+  background: white;
+  padding: 10px;
+  color: black;
+  border-radius: 5px;
+  border: 3px solid #711d1c;
+  margin-top: 4.5px;
+  outline: 0;
+}
+.discount input {
+  padding: 10px;
+  background-color: white;
+  margin-top: 4px;
+  outline: 0;
+  color: black;
+  border-radius: 5px;
+  border: 3px solid #711d1c;
+  width: 100%;
+}
+.discount p {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  text-align: right;
+  text-transform: uppercase;
+  font-size: 30px;
+  position: relative;
+  z-index: 1;
+}
+.discount label {
+  font-size: 20px;
+}
+
+.discount button {
+  margin-left: auto;
+  width: max-content;
+  border: 0;
+  border-radius: 4px;
+  background-color: #711d1c;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  margin-top: 1.4rem;
+}
