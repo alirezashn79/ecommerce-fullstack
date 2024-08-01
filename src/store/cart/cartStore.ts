@@ -21,7 +21,6 @@ const useCartStore = create<ICart>()(
       products: [],
 
       addToCart: (product) => {
-        console.log("inc");
         const result = get().products.slice();
         const index = result.findIndex((item) => item.id === product.id);
         if (index !== -1) {

@@ -29,8 +29,6 @@ export default function AddToCart({
     setCount(1);
   };
 
-  console.log(products);
-
   return (
     <div className={styles.cart}>
       <div>
