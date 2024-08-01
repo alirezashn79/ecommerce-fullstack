@@ -6,7 +6,7 @@ import Select from "react-select";
 import stateData from "utils/stateData";
 import totalStyles from "./totals.module.css";
 interface TotalProps {
-  totalPrice: () => number;
+  totalPrice: number;
 }
 export default function Total({ totalPrice }: TotalProps) {
   const [stateSelectedOption, setStateSelectedOption] = useState<null | {
@@ -23,7 +23,7 @@ export default function Total({ totalPrice }: TotalProps) {
 
       <div className={totalStyles.subtotal}>
         <p>جمع جزء </p>
-        <p>{totalPrice().toLocaleString()} تومان</p>
+        <p>{totalPrice.toLocaleString()} تومان</p>
       </div>
 
       <p className={totalStyles.motor}>
@@ -60,7 +60,7 @@ export default function Total({ totalPrice }: TotalProps) {
 
       <div className={totalStyles.total}>
         <p>مجموع</p>
-        <p>{(totalPrice() + 30000).toLocaleString()} تومان</p>
+        <p>{(totalPrice + 30000).toLocaleString()} تومان</p>
       </div>
       <Link href={"/checkout"}>
         <button className={totalStyles.checkout_btn}>

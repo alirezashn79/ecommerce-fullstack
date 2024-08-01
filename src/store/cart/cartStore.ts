@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -23,18 +22,16 @@ const useCartStore = create<ICart>()(
       addToCart: (product) => {
         const result = get().products.slice();
         const index = result.findIndex((item) => item.id === product.id);
-        if (index !== -1) {
-          result[index].count += product.count;
+        if (~index) {
+          result[index] = product;
         } else {
           result.push(product);
         }
-
         set({ products: result });
-        toast.success("به سبد خرید اضافه شد");
       },
       removeFromCart: (id) => {
         const clone = get().products?.slice();
-        const filteredClone = clone.filter((item) => item.id === id);
+        const filteredClone = clone.filter((item) => item.id !== id);
         set({ products: filteredClone });
       },
     }),

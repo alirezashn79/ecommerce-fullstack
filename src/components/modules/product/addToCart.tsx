@@ -1,7 +1,8 @@
 "use client";
 import useCartStore from "@/store/cart/cartStore";
 import styles from "./addToCart.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function AddToCart({
   id,
@@ -13,8 +14,8 @@ export default function AddToCart({
   price: number;
 }) {
   const [count, setCount] = useState(1);
-  const add = useCartStore((state) => state.addToCart);
   const products = useCartStore((state) => state.products);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const handleIncrement = () => {
     setCount((prev) => prev + 1);
@@ -25,9 +26,16 @@ export default function AddToCart({
   };
 
   const handleAddToCart = () => {
-    add({ id, name, price, count });
-    setCount(1);
+    addToCart({ id, name, price, count });
+    toast.success("به سبد خرید اضافه شد");
   };
+
+  useEffect(() => {
+    const result = products.find((item) => item.id === id);
+    if (result) {
+      setCount(result.count);
+    }
+  }, [products]);
 
   return (
     <div className={styles.cart}>

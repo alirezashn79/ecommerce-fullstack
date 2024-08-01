@@ -1,3 +1,4 @@
+import AddToCart from "components/modules/product/addToCart";
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -11,7 +12,6 @@ import { TbSwitch3 } from "react-icons/tb";
 import AddToWishlist from "./AddToWishlist";
 import Breadcrumb from "./Breadcrumb";
 import styles from "./details.module.css";
-import AddToCart from "components/modules/product/addToCart";
 
 interface IDetailsProps {
   id: string;

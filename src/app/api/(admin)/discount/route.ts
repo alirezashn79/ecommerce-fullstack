@@ -75,10 +75,15 @@ export async function PUT(req: Request) {
       return Response.json({ message: "Code expired" }, { status: 422 });
 
     await discountModel.findByIdAndUpdate(result._id, {
-      uses: result.uses + 1,
+      $inc: {
+        uses: 1,
+      },
     });
 
-    return Response.json({ message: "code is valid", data: result });
+    return Response.json({
+      message: "code is valid",
+      data: { percent: result.percent },
+    });
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },

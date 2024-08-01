@@ -7,6 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
 import styles from "./Navbar.module.css";
+import useCartStore from "@/store/cart/cartStore";
 
 interface INavbarProps {
   isLogin: boolean;
@@ -14,6 +15,7 @@ interface INavbarProps {
 
 function Navbar({ isLogin }: INavbarProps) {
   const [{ y }] = useWindowScroll();
+  const products = useCartStore((state) => state.products);
   return (
     <nav className={!y || y < 85 ? styles.navbar : styles.navbar_fixed}>
       <main>
@@ -67,7 +69,7 @@ function Navbar({ isLogin }: INavbarProps) {
         <div className={styles.navbar_icons}>
           <Link href="/cart">
             <LuShoppingCart />
-            <span>1</span>
+            {products.length > 0 && <span>{products.length}</span>}
           </Link>
           <Link href="/wishlist">
             <FaRegHeart />
