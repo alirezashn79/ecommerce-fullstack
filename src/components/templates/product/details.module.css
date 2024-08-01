@@ -34,45 +34,6 @@
   margin-bottom: 50px;
 }
 
-.cart {
-  display: flex;
-  gap: 10px;
-  justify-content: right;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 20px;
-  flex-direction: row-reverse;
-}
-.cart div span:nth-child(2) {
-  border-right: 1px solid black;
-}
-.cart div span:nth-child(1) {
-  border-left: 1px solid black;
-}
-.cart span {
-  width: 30%;
-  cursor: pointer;
-  padding: 10px 0px;
-}
-.cart div {
-  width: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid gray;
-}
-.cart button:hover {
-  background-color: rgb(113, 29, 28);
-}
-.cart button {
-  background-color: rgb(0, 137, 121);
-  padding: 0.85rem 1.2rem;
-  cursor: pointer;
-  border: 0;
-  transition: all 0.2s;
-  font-family: shabnam;
-}
-
 .wishlist div {
   display: flex;
   gap: 3px;

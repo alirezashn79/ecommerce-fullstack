@@ -11,6 +11,7 @@ import { TbSwitch3 } from "react-icons/tb";
 import AddToWishlist from "./AddToWishlist";
 import Breadcrumb from "./Breadcrumb";
 import styles from "./details.module.css";
+import AddToCart from "components/modules/product/addToCart";
 
 interface IDetailsProps {
   id: string;
@@ -68,12 +69,7 @@ const Details: React.FC<IDetailsProps> = ({
         )}
       </div>
 
-      <div className={styles.cart}>
-        <button>افزودن به سبد خرید</button>
-        <div>
-          <span>-</span>1<span>+</span>
-        </div>
-      </div>
+      <AddToCart id={id} name={name} price={price} />
 
       <section className={styles.wishlist}>
         <AddToWishlist productId={id} />
