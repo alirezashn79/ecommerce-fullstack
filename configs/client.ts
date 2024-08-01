@@ -16,13 +16,16 @@ client.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response) {
-      if (error.response.status === 404) {
-        toast.error("خطای داخلی");
-      } else if (error.response.status === 401) {
+      // if (error.response.status === 404) {
+      //   toast.error("خطای داخلی");
+      // } else
+      if (error.response.status === 401) {
         toast.error("لاگین نیستید");
         location.replace("/login-register");
       } else {
-        toast.error(error.response.data.message);
+        toast.error(
+          `${error.response.data.message} - code:${error.response.status}`
+        );
       }
       return Promise.reject(error);
     }

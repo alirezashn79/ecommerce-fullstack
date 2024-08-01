@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
   if (token) {
     const tokenPayload = verifyAccessToken(token.value);
-    if (tokenPayload && tokenPayload && typeof tokenPayload === "object") {
+    if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
       user = await userModel.findOne(
         { email: tokenPayload.email },

@@ -5,8 +5,13 @@ import { IoMdClose } from "react-icons/io";
 import styles from "./table.module.css";
 import Total from "./Total";
 import useCartStore from "@/store/cart/cartStore";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import client from "configs/client";
 
 const Table = () => {
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountLoading, setDiscountLoading] = useState(false);
   const products = useCartStore((state) => state.products);
 
   const calcTotalPrice = () => {
@@ -18,6 +23,19 @@ const Table = () => {
     }
 
     return total;
+  };
+
+  const handleCheckDiscountCode = async () => {
+    if (!discountCode.trim()) return toast.error("کد تخفیف را وارد کنید");
+    try {
+      setDiscountLoading(true);
+      const res = await client.put("/discount", { code: discountCode });
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDiscountLoading(false);
+    }
   };
 
   return (
@@ -67,8 +85,19 @@ const Table = () => {
         <section>
           <button className={styles.update_btn}> بروزرسانی سبد خرید</button>
           <div>
-            <button className={styles.set_off_btn}>اعمال کوپن</button>
-            <input type="text" placeholder="کد تخفیف" />
+            <button
+              onClick={handleCheckDiscountCode}
+              disabled={discountLoading}
+              className={styles.set_off_btn}
+            >
+              اعمال کوپن
+            </button>
+            <input
+              value={discountCode}
+              onChange={(e) => setDiscountCode(e.target.value)}
+              type="text"
+              placeholder="کد تخفیف"
+            />
           </div>
         </section>
       </div>

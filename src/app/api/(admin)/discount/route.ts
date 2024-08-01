@@ -60,3 +60,31 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function PUT(req: Request) {
+  try {
+    const reqBody = await req.json();
+    const code = reqBody.code.trim();
+
+    const result = await discountModel.findOne({ code });
+
+    if (!result)
+      return Response.json({ message: "Code not found" }, { status: 404 });
+
+    if (result.maxUse === result.uses)
+      return Response.json({ message: "Code expired" }, { status: 422 });
+
+    await discountModel.findByIdAndUpdate(result._id, {
+      uses: result.uses + 1,
+    });
+
+    return Response.json({ message: "code is valid", data: result });
+  } catch (error) {
+    return Response.json(
+      { message: "Server Error", error },
+      {
+        status: 500,
+      }
+    );
+  }
+}
