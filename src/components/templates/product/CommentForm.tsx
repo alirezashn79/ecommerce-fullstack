@@ -2,7 +2,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import client from "configs/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaStar } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -18,11 +18,13 @@ const commentSchema = zCommentSchema.omit({
 type TCommentForm = TypeOf<typeof zCommentSchema>;
 
 const CommentForm = ({ productID }: { productID: string }) => {
+  const [isUserRemember, setIsUserRemember] = useState(false);
   const [score, setScore] = useState(0);
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<TCommentForm>({
     resolver: zodResolver(commentSchema),
@@ -38,11 +40,31 @@ const CommentForm = ({ productID }: { productID: string }) => {
     const res = await client.post("/comments", inputsData);
 
     if (res.status === 201) {
+      if (isUserRemember) {
+        const userInfo = {
+          username: values.username,
+          email: values.email,
+        };
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      }
       toast.success(res.data.message);
       reset();
       setScore(0);
     }
   };
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (!userInfo) return;
+    const parsedInfo = JSON.parse(userInfo) as {
+      username: string;
+      email: string;
+    };
+    setValue("username", parsedInfo.username);
+    setValue("email", parsedInfo.email);
+    setIsUserRemember(true);
+  }, []);
   return (
     <div className={styles.form}>
       <p className={styles.title}>دیدگاه خود را بنویسید</p>
@@ -98,16 +120,20 @@ const CommentForm = ({ productID }: { productID: string }) => {
             </div>
           </div>
         </div>
-        {/* <div className={styles.checkbox}>
-        <input type="checkbox" name="" id="" />
+        <button type="submit">ثبت</button>
+      </form>
+      <div className={styles.checkbox}>
+        <input
+          type="checkbox"
+          onChange={(e) => setIsUserRemember(e.target.checked)}
+          checked={isUserRemember}
+        />
         <p>
           {" "}
           ذخیره نام، ایمیل و وبسایت من در مرورگر برای زمانی که دوباره دیدگاهی
           می‌نویسم.
         </p>
-      </div> */}
-        <button type="submit">ثبت</button>
-      </form>
+      </div>
     </div>
   );
 };

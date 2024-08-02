@@ -88,7 +88,7 @@ const Table = () => {
                       onClick={() =>
                         item.count > 1
                           ? addToCart({ ...item, count: item.count - 1 })
-                          : removeFromCart(item.id)
+                          : handleRemoveFromCart(item.id)
                       }
                     >
                       -
