@@ -1,15 +1,17 @@
 "use client";
+import { valiadteEmail } from "@/utils/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import client from "configs/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { userSchema } from "schemas/auth";
+import { zPhoneSchema } from "schemas/otp";
 import { TUserCreate } from "types/auth";
 import styles from "./register.module.css";
 import Sms from "./Sms";
-import { valiadteEmail } from "@/utils/auth";
-import { useRouter } from "next/navigation";
 
 interface IRegister {
   showloginForm: () => void;
@@ -19,6 +21,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
   // states
   const [isShowOtp, setIsShowOtp] = useState(false);
   const [isRegisterWithPass, setIsRegisterWithPass] = useState(false);
+  const [sendOtpLoading, setSendOtpLoading] = useState(false);
 
   // hooks
   const router = useRouter();
@@ -26,6 +29,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
     register,
     handleSubmit,
     reset,
+    getValues,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<TUserCreate>({
@@ -61,11 +65,34 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
     }
   };
 
+  const handleSignUpWithCode = async () => {
+    const validationResult = zPhoneSchema.safeParse({
+      phone: getValues("phone"),
+    });
+
+    if (!validationResult.success) {
+      return toast.error("تلفن  همراه صحیح نیست");
+    }
+
+    try {
+      setSendOtpLoading(true);
+      const res = await client.post("/auth/sms/send", {
+        phone: validationResult.data.phone,
+      });
+      toast.success(res.data.message);
+      setIsShowOtp(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSendOtpLoading(false);
+    }
+  };
+
   const togglePassInput = () => setIsRegisterWithPass(true);
 
   const goBack = () => setIsShowOtp(false);
 
-  if (isShowOtp) return <Sms goBack={goBack} />;
+  if (isShowOtp) return <Sms goBack={goBack} phone={getValues("phone")} />;
 
   return (
     <>
@@ -126,13 +153,15 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
         )}
 
         {!isRegisterWithPass && (
-          <p
-            onClick={() => setIsShowOtp(true)}
+          <button
+            type="button"
+            disabled={sendOtpLoading}
+            onClick={handleSignUpWithCode}
             style={{ marginTop: "1rem" }}
             className={styles.btn}
           >
             ثبت نام با کد تایید
-          </p>
+          </button>
         )}
         <button
           onClick={
