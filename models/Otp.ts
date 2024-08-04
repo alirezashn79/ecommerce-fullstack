@@ -4,7 +4,8 @@ interface IOtp {
   phone: string;
   code: string;
   expTime: number;
-  usedTime: number;
+  // usedTime: number;
+  isExpired: boolean;
 }
 
 const schema = new Schema<IOtp>({
@@ -18,13 +19,15 @@ const schema = new Schema<IOtp>({
   },
   expTime: {
     type: Number,
-    // required: true
-    // default: new Date().getTime() + 90_000,
-    default: Date.now() + 120_000,
+    required: true,
   },
-  usedTime: {
-    type: Number,
-    default: 0,
+  // usedTime: {
+  //   type: Number,
+  //   default: 0,
+  // },
+  isExpired: {
+    type: Boolean,
+    default: false,
   },
 });
 

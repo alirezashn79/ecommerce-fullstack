@@ -61,7 +61,7 @@ const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
 
     try {
       setSendOtpLoading(true);
-      const res = await client.post("/auth/sms/send", {
+      const res = await client.post("/auth/sms/signin/send", {
         phone: validationResult.data.phone,
       });
       toast.success(res.data.message);
@@ -73,7 +73,10 @@ const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
     }
   };
 
-  if (isShowOtp) return <Sms phone={getValues("identifier")} goBack={goBack} />;
+  if (isShowOtp)
+    return (
+      <Sms type="signin" phone={getValues("identifier")} goBack={goBack} />
+    );
 
   return (
     <>

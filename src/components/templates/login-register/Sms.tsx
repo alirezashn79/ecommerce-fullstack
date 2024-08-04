@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 interface ISms {
   goBack: () => void;
   phone: string;
+  type: "signup" | "signin";
 }
-const Sms: React.FC<ISms> = ({ goBack, phone }) => {
+const Sms: React.FC<ISms> = ({ goBack, phone, type }) => {
   const { replace } = useRouter();
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
@@ -20,7 +21,10 @@ const Sms: React.FC<ISms> = ({ goBack, phone }) => {
 
     try {
       setLoading(true);
-      const res = await client.post("/auth/sms/verify", { code, phone });
+      const res = await client.post(`/auth/sms/${type}/verify`, {
+        code,
+        phone,
+      });
       toast.success(res.data.message);
       replace("/p-user");
     } catch (error) {

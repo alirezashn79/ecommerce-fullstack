@@ -2,7 +2,7 @@ import connectToDB from "configs/db";
 import otpModel from "models/Otp";
 import userModel from "models/User";
 import { zVerifySchema } from "schemas/otp";
-import { generateAccessToken } from "utils/auth";
+import { generateAccessToken, generateRefreshToken } from "utils/auth";
 
 export async function POST(req: Request) {
   try {
@@ -22,41 +22,39 @@ export async function POST(req: Request) {
       );
     }
     await connectToDB();
-    const result = await otpModel.findOne(validationResult.data);
 
-    if (!result) {
-      const isExist = await otpModel.exists({
-        phone: validationResult.data.phone,
-      });
+    const isUser = await userModel.exists({
+      phone: validationResult.data.phone,
+    });
 
-      if (isExist) {
-        const existedOtp = await otpModel.findByIdAndUpdate(isExist._id, {
-          $inc: {
-            usedTime: 1,
-          },
-        });
-
-        if (existedOtp.usedTime >= 3) {
-          await otpModel.findByIdAndDelete(isExist._id);
-          return Response.json({ message: "try  later" }, { status: 409 });
-        }
-      }
-      return Response.json({ message: "code is invalid" }, { status: 409 });
+    if (!!isUser) {
+      return Response.json({ message: "user already exist" }, { status: 400 });
     }
 
+    const result = await otpModel.findOne(validationResult.data);
+
+    if (!result || result.isExpired)
+      return Response.json({ message: "No records found" }, { status: 404 });
+
     const now = new Date().getTime();
+
     if (now > result.expTime) {
-      await otpModel.findByIdAndDelete(result._id);
       return Response.json({ message: "code expired" }, { status: 410 });
     }
 
-    const token = generateAccessToken({ phone: reqBody.phone });
+    await otpModel.findByIdAndUpdate(result._id, {
+      isExpired: true,
+    });
 
-    await otpModel.deleteMany({ phone: reqBody.phone });
+    const token = generateAccessToken({ phone: validationResult.data.phone });
+    const refreshToken = generateRefreshToken({
+      phone: validationResult.data.phone,
+    });
 
     await userModel.create({
-      phone: reqBody.phone,
-      email: `${reqBody.phone}@gmail.com`,
+      phone: validationResult.data.phone,
+      email: `${validationResult.data.phone}@gmail.com`,
+      refreshToken,
     });
 
     return Response.json(

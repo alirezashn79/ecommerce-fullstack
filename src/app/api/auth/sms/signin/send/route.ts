@@ -20,16 +20,16 @@ export async function POST(req: Request) {
     }
 
     await connectToDB();
-    // const isExist = await userModel.countDocuments({ phone });
+    const isExist = await userModel.exists({ phone });
 
-    // if (isExist > 0) {
-    //   return Response.json(
-    //     { message: "User Already Exist" },
-    //     {
-    //       status: 422,
-    //     }
-    //   );
-    // }
+    if (!isExist) {
+      return Response.json(
+        { message: "phone not found" },
+        {
+          status: 404,
+        }
+      );
+    }
 
     const code = Math.floor(Math.random() * 90000) + 10000;
 
@@ -49,9 +49,11 @@ export async function POST(req: Request) {
       },
       async function (error, response) {
         if (!error && response.statusCode === 200) {
+          const now = new Date().getTime() + 120_000;
           await otpModel.create({
             phone,
             code,
+            expTime: now,
           });
         } else {
           return Response.json(

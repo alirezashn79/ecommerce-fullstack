@@ -49,9 +49,9 @@ export async function POST(req: Request) {
     const accessToken = generateAccessToken({
       phone: validationResult.data.phone,
     });
-    // const refreshToken = generateRefreshToken({
-    //   phone: validationResult.data.phone,
-    // });
+    const refreshToken = generateRefreshToken({
+      phone: validationResult.data.phone,
+    });
 
     // user type
     const usersLength = await userModel.countDocuments();
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       phone: validationResult.data.phone,
       password: hashedPassword,
       role: usersLength > 0 ? "USER" : "ADMIN",
-      // refreshToken,
+      refreshToken,
     });
 
     return Response.json(

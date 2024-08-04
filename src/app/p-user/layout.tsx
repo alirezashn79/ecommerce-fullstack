@@ -8,8 +8,6 @@ import styles from "styles/p-user/userPanelLayout.module.css";
 const Layout = async ({ children }: { readonly children: React.ReactNode }) => {
   const isUser = await authUser();
 
-  console.log(isUser);
-
   if (!isUser) {
     return redirect("/login-register");
   }

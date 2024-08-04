@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     const refreshToken = generateRefreshToken({ phone: user.phone });
 
     await userModel.findByIdAndUpdate(user._id, {
-      $set: { refreshToken },
+      refreshToken,
     });
 
     return Response.json(
