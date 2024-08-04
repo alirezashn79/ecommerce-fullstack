@@ -9,6 +9,6 @@ export const ZProductSchema = z.object({
   suitableFor: z.string().trim().min(4),
   smell: z.string().trim().min(4),
   score: z.number().positive().default(5),
-  tags: z.array(z.string().trim().min(4)),
+  tags: z.array(z.string().trim()),
   inventory: z.number().positive(),
 });
