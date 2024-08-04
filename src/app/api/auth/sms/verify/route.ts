@@ -1,6 +1,8 @@
 import connectToDB from "configs/db";
 import otpModel from "models/Otp";
+import userModel from "models/User";
 import { zVerifySchema } from "schemas/otp";
+import { generateAccessToken } from "utils/auth";
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +17,7 @@ export async function POST(req: Request) {
       return Response.json(
         { message: "Invalid data", error: validationResult.error.errors },
         {
-          status: 422,
+          status: 400,
         }
       );
     }
@@ -48,11 +50,24 @@ export async function POST(req: Request) {
       return Response.json({ message: "code expired" }, { status: 410 });
     }
 
-    await otpModel.deleteMany({ phone: result.phone });
+    const token = generateAccessToken({ phone: reqBody.phone });
 
-    return Response.json({
-      message: "verify otp successfully",
+    await otpModel.deleteMany({ phone: reqBody.phone });
+
+    await userModel.create({
+      phone: reqBody.phone,
+      email: `${reqBody.phone}@gmail.com`,
     });
+
+    return Response.json(
+      { message: "user signed up...!" },
+      {
+        status: 201,
+        headers: {
+          "Set-Cookie": `token=${token};path=/;httpOnly=true;;max-age=3600`,
+        },
+      }
+    );
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },

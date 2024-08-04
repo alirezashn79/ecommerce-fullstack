@@ -1,23 +1,24 @@
-import { generateAccessToken, hashPassword } from "@/utils/auth";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  hashPassword,
+} from "@/utils/auth";
 import connectToDB from "configs/db";
 import userModel from "models/User";
-import { userSchema } from "schemas/auth";
-import { TUserCreate } from "types/auth";
+import { zSignUpUserSchema } from "schemas/auth/signup";
 
 export async function POST(req: Request) {
   try {
-    const body: TUserCreate = await req.json();
+    const body = await req.json();
 
     // validation
-    try {
-      await userSchema.validate(body, {
-        abortEarly: false,
-      });
-    } catch (err) {
+    const validationResult = zSignUpUserSchema.safeParse(body);
+
+    if (!validationResult.success) {
       return Response.json(
-        { message: "invalid data...!", errorFields: err.inner },
+        { message: "validation error", error: validationResult.error.errors },
         {
-          status: 400,
+          status: 422,
         }
       );
     }
@@ -27,7 +28,7 @@ export async function POST(req: Request) {
 
     // user exist
     const isUserExist = await userModel.exists({
-      $or: [{ name: body.name }, { email: body.email }, { phone: body.phone }],
+      phone: body.phone,
     });
 
     if (isUserExist) {
@@ -40,23 +41,29 @@ export async function POST(req: Request) {
     }
 
     // hash password
-    const hashedPassword = body.password
-      ? await hashPassword(body.password)
-      : undefined;
+    const hashedPassword = await hashPassword(
+      validationResult.data.password as string
+    );
 
     // generate access token
-    const token = generateAccessToken({ name: body.name, phone: body.phone });
+    const accessToken = generateAccessToken({
+      phone: validationResult.data.phone,
+    });
+    // const refreshToken = generateRefreshToken({
+    //   phone: validationResult.data.phone,
+    // });
 
     // user type
-    const users = await userModel.find({}, "_id");
+    const usersLength = await userModel.countDocuments();
 
     // create user
     await userModel.create({
-      name: body.name,
-      email: body?.email || undefined,
-      phone: body.phone,
+      name: validationResult.data.name,
+      email: validationResult.data.email,
+      phone: validationResult.data.phone,
       password: hashedPassword,
-      role: users.length > 0 ? "USER" : "ADMIN",
+      role: usersLength > 0 ? "USER" : "ADMIN",
+      // refreshToken,
     });
 
     return Response.json(
@@ -64,7 +71,7 @@ export async function POST(req: Request) {
       {
         status: 201,
         headers: {
-          "Set-Cookie": `token=${token};path=/;httpOnly=true;`,
+          "Set-Cookie": `token=${accessToken};path=/;httpOnly=true;;max-age=3600`,
         },
       }
     );

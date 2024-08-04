@@ -2,6 +2,7 @@ import otpModel from "models/Otp";
 import { zPhoneSchema } from "schemas/otp";
 import request from "request";
 import connectToDB from "configs/db";
+import userModel from "models/User";
 
 export async function POST(req: Request) {
   try {
@@ -14,9 +15,21 @@ export async function POST(req: Request) {
     if (!validationResult.success) {
       return Response.json(
         { message: "phone number is invalid" },
-        { status: 422 }
+        { status: 400 }
       );
     }
+
+    await connectToDB();
+    // const isExist = await userModel.countDocuments({ phone });
+
+    // if (isExist > 0) {
+    //   return Response.json(
+    //     { message: "User Already Exist" },
+    //     {
+    //       status: 422,
+    //     }
+    //   );
+    // }
 
     const code = Math.floor(Math.random() * 90000) + 10000;
 
@@ -36,7 +49,6 @@ export async function POST(req: Request) {
       },
       async function (error, response) {
         if (!error && response.statusCode === 200) {
-          await connectToDB();
           await otpModel.create({
             phone,
             code,

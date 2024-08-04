@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
       user = await userModel.findOne(
-        { email: tokenPayload.email },
+        { phone: tokenPayload.phone },
         "name email phone role"
       );
     }

@@ -1,21 +1,22 @@
 "use client";
-import { valiadteEmail } from "@/utils/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import client from "configs/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { userSchema } from "schemas/auth";
+import { zSignUpUserSchema } from "schemas/auth/signup";
 import { zPhoneSchema } from "schemas/otp";
-import { TUserCreate } from "types/auth";
+import { TypeOf } from "zod";
 import styles from "./register.module.css";
 import Sms from "./Sms";
 
 interface IRegister {
   showloginForm: () => void;
 }
+
+type TSignup = TypeOf<typeof zSignUpUserSchema>;
 
 const Register: React.FC<IRegister> = ({ showloginForm }) => {
   // states
@@ -30,32 +31,23 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
     handleSubmit,
     reset,
     getValues,
-    setError,
     formState: { errors, isSubmitting },
-  } = useForm<TUserCreate>({
+  } = useForm<TSignup>({
     mode: "all",
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-    },
-    resolver: yupResolver(userSchema),
+
+    resolver: zodResolver(zSignUpUserSchema),
   });
 
   // handlers
-  const onSignUpWithEmail: SubmitHandler<TUserCreate> = async (values) => {
-    if (!values.email || !valiadteEmail(values.email)) {
-      setError("email", {
-        message: "email is a required field",
-      });
-      return;
-    }
+  const handleSignupWithPass: SubmitHandler<TSignup> = async (values) => {
     try {
-      const res = await axios.post("/api/auth/signup", values);
+      const res = await axios.post("/api/auth/signup", {
+        ...values,
+        name: values.name || undefined,
+      });
       toast.success(res.data.message);
       reset();
-      router.replace("/");
+      router.replace("/p-user");
       router.refresh();
     } catch (error) {
       if (error.response) {
@@ -101,7 +93,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
           {...register("name")}
           className={styles.input}
           type="text"
-          placeholder="نام"
+          placeholder="نام (اختیاری)"
         />
         {errors.name && (
           <span
@@ -127,7 +119,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
           {...register("email")}
           className={styles.input}
           type="email"
-          placeholder={isRegisterWithPass ? "ایمیل (اجباری)" : "ایمیل (دلخواه)"}
+          placeholder="ایمیل (اختیاری)"
         />
         {errors.email && (
           <span
@@ -166,7 +158,7 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
         <button
           onClick={
             isRegisterWithPass
-              ? handleSubmit(onSignUpWithEmail)
+              ? handleSubmit(handleSignupWithPass)
               : togglePassInput
           }
           style={{ marginTop: ".7rem" }}

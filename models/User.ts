@@ -1,11 +1,19 @@
 import { Schema, model, models } from "mongoose";
-import { TUser } from "types/auth";
 
-const userSchema = new Schema<TUser>(
+interface IUserModel {
+  name: string;
+  phone: string;
+  role: "ADMIN" | "USER";
+  refreshToken?: string;
+  email?: string;
+  password?: string;
+}
+const userSchema = new Schema<IUserModel>(
   {
     name: {
       type: String,
-      required: true,
+      // required: true,
+      default: "کاربر ست کافی",
       minlength: 6,
     },
     phone: {
@@ -26,6 +34,6 @@ const userSchema = new Schema<TUser>(
     timestamps: true,
   }
 );
-const userModel = models.User || model<TUser>("User", userSchema);
+const userModel = models.User || model<IUserModel>("User", userSchema);
 
 export default userModel;

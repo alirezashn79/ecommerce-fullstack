@@ -1,6 +1,6 @@
 import { object, string } from "yup";
 export const userSchema = object({
-  name: string().trim().min(6).required(),
+  name: string().default("کاربر ست کافی").optional(),
   email: string()
     .trim()
     .matches(/^$|[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, "email is not valid")

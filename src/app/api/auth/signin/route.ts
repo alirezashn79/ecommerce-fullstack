@@ -5,24 +5,20 @@ import {
 } from "@/utils/auth";
 import connectToDB from "configs/db";
 import userModel from "models/User";
-import { signinWithEmailSchema } from "schemas/auth";
+import { zSigninSchema } from "schemas/auth/signin";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { email, password } = body;
+    const validationResult = zSigninSchema.safeParse(body);
 
-    try {
-      await signinWithEmailSchema.validate(
-        { email, password },
-        {
-          abortEarly: false,
-        }
-      );
-    } catch (err) {
+    if (!validationResult.success) {
       return Response.json(
-        { message: "invalid data...!", errorFields: err.inner },
+        {
+          message: "invalid data...!",
+          errorFields: validationResult.error.errors,
+        },
         {
           status: 400,
         }
@@ -31,7 +27,15 @@ export async function POST(req: Request) {
 
     await connectToDB();
 
-    const user = await userModel.findOne({ email }, "password");
+    const user = await userModel.findOne(
+      {
+        $or: [
+          { email: validationResult.data.identifier },
+          { phone: validationResult.data.identifier },
+        ],
+      },
+      "password phone"
+    );
 
     if (!user) {
       return Response.json(
@@ -42,19 +46,31 @@ export async function POST(req: Request) {
       );
     }
 
-    const isVerifyPassword = await verifyPassword(password, user.password);
+    if (user.password) {
+      const isVerifyPassword = await verifyPassword(
+        validationResult.data.password as string,
+        user.password
+      );
 
-    if (!isVerifyPassword) {
+      if (!isVerifyPassword) {
+        return Response.json(
+          { message: "user or password is wrong...!" },
+          {
+            status: 401,
+          }
+        );
+      }
+    } else {
       return Response.json(
-        { message: "user or password is wrong...!" },
+        { message: "please signin with code" },
         {
-          status: 401,
+          status: 400,
         }
       );
     }
 
-    const accessToken = generateAccessToken({ email });
-    const refreshToken = generateRefreshToken({ email });
+    const accessToken = generateAccessToken({ phone: user.phone });
+    const refreshToken = generateRefreshToken({ phone: user.phone });
 
     await userModel.findByIdAndUpdate(user._id, {
       $set: { refreshToken },

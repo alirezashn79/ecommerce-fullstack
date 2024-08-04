@@ -24,7 +24,7 @@ export default async function IndexLayout({
     if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
 
-      user = await userModel.exists({ email: tokenPayload.email });
+      user = await userModel.exists({ phone: tokenPayload.phone });
     }
   }
   return (

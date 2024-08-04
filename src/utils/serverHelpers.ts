@@ -22,9 +22,10 @@ const authUser = async () => {
 
   if (typeof tokenPayload === "object") {
     await connectToDB();
-    const user = await userModel
-      .findOne({ email: tokenPayload.email }, "name role")
-      .lean();
+    const user = await userModel.findOne(
+      { phone: tokenPayload.phone },
+      "name role"
+    );
 
     if (!user) {
       return false;
@@ -36,9 +37,9 @@ const authUser = async () => {
 const getUserId = async () => {
   const token = cookies().get("token")?.value;
   const tokenPayload = verifyAccessToken(String(token));
-  const email = Object(tokenPayload).email;
+  const phone = Object(tokenPayload).phone;
   await connectToDB();
-  const user = await userModel.exists({ email });
+  const user = await userModel.exists({ phone });
   return String(user?._id);
 };
 

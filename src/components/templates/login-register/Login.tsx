@@ -1,24 +1,25 @@
 "use client";
 import { ErrorMessage } from "@hookform/error-message";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
+import client from "configs/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { signinDynamicIndntifier } from "schemas/auth";
-import { InferType } from "yup";
+import { toast } from "react-toastify";
+import { zSigninSchema } from "schemas/auth/signin";
+import { zPhoneSchema } from "schemas/otp";
+import { TypeOf } from "zod";
 import styles from "./login.module.css";
 import Sms from "./Sms";
-import { valiadteEmail } from "@/utils/auth";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 interface ILogin {
   showRegisterForm: () => void;
 }
-
+type TSignin = TypeOf<typeof zSigninSchema>;
 const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
   const [isShowOtp, setIsShowOtp] = useState(false);
+  const [sendOtpLoading, setSendOtpLoading] = useState(false);
   const goBack = () => setIsShowOtp(false);
 
   // hooks
@@ -26,41 +27,53 @@ const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
   const {
     handleSubmit,
     register,
-    setError,
+    getValues,
     formState: { errors },
-  } = useForm<InferType<typeof signinDynamicIndntifier>>({
+  } = useForm<TSignin>({
     mode: "all",
-    resolver: yupResolver(signinDynamicIndntifier),
+    resolver: zodResolver(zSigninSchema),
   });
 
-  const signinWithEmail: SubmitHandler<
-    InferType<typeof signinDynamicIndntifier>
-  > = async (values) => {
-    if (!valiadteEmail(values.identifier)) {
-      setError("identifier", {
-        message: "email is invalid",
-      });
-      return;
-    }
-
+  const signinWithPassword: SubmitHandler<TSignin> = async (values) => {
     try {
-      const res = await axios.post("/api/auth/signin", {
-        email: values.identifier,
+      const res = await client.post("/auth/signin", {
+        identifier: values.identifier,
         password: values.password,
       });
       toast.success(res.data.message);
-      router.replace("/");
+      router.replace("/p-user");
       router.refresh();
     } catch (error) {
       if (error.response) {
-        toast.error(
-          `${error.response.data.message}  (${error.response.status})`
-        );
+        console.log(error);
       }
     }
   };
 
-  if (isShowOtp) return <Sms goBack={goBack} />;
+  const handleSiginWithCode = async () => {
+    const validationResult = zPhoneSchema.safeParse({
+      phone: getValues("identifier"),
+    });
+
+    if (!validationResult.success) {
+      return toast.error("تلفن  همراه صحیح نیست");
+    }
+
+    try {
+      setSendOtpLoading(true);
+      const res = await client.post("/auth/sms/send", {
+        phone: validationResult.data.phone,
+      });
+      toast.success(res.data.message);
+      setIsShowOtp(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSendOtpLoading(false);
+    }
+  };
+
+  if (isShowOtp) return <Sms phone={getValues("identifier")} goBack={goBack} />;
 
   return (
     <>
@@ -103,13 +116,20 @@ const Login: React.FC<ILogin> = ({ showRegisterForm }) => {
           <input type="checkbox" name="" id="" />
           <p>مرا به یاد داشته باش</p>
         </div>
-        <button className={styles.btn} onClick={handleSubmit(signinWithEmail)}>
+        <button
+          className={styles.btn}
+          onClick={handleSubmit(signinWithPassword)}
+        >
           ورود
         </button>
         <Link href={"/forgot-password"} className={styles.forgot_pass}>
           رمز عبور را فراموش کرده اید؟
         </Link>
-        <button onClick={() => setIsShowOtp(true)} className={styles.btn}>
+        <button
+          disabled={sendOtpLoading}
+          onClick={handleSiginWithCode}
+          className={styles.btn}
+        >
           ورود با کد یکبار مصرف
         </button>
         <span>ایا حساب کاربری ندارید؟</span>
