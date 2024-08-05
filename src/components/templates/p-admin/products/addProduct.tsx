@@ -6,10 +6,10 @@ import client from "configs/client";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { zClientImageSchema } from "schemas/img";
 import { ZProductSchema } from "schemas/products";
 import { TypeOf, z } from "zod";
 import styles from "./add-product.module.css";
-import { zClientImageSchema } from "schemas/img";
 
 const productSchema = ZProductSchema.omit({
   score: true,

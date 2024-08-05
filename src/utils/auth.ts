@@ -1,5 +1,5 @@
-import { hash, compare } from "bcrypt-ts";
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { compare, hash } from "bcrypt-ts";
+import { sign, verify } from "jsonwebtoken";
 
 export async function hashPassword(password: string) {
   const hashedPassword = await hash(password, 10);
@@ -16,7 +16,7 @@ export function generateAccessToken(data: { phone: string }) {
     { ...data },
     process.env.ACCESS_TOKEN_SECRET_KEY as string,
     {
-      expiresIn: "10h",
+      expiresIn: 120,
     }
   );
 
@@ -28,7 +28,7 @@ export function generateRefreshToken(data: { phone: string }) {
     { ...data },
     process.env.REFRESH_TOKEN_SECRET_KEY as string,
     {
-      expiresIn: "14d",
+      expiresIn: 240,
     }
   );
 

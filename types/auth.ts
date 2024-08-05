@@ -21,4 +21,5 @@ export interface IFComment extends Omit<TypeOf<typeof zCommentSchema>, "date"> {
 export interface IFProduct extends TypeOf<typeof ZProductSchema> {
   _id: TObjectId;
   comments: IFComment[];
+  img: string;
 }

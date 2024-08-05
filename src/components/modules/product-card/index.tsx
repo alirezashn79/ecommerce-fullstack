@@ -4,27 +4,32 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import styles from "./product-card.module.css";
 
 interface IProductCardProps {
-  id: string;
+  _id: string;
   name: string;
   score: number;
   price: number;
+  img: string;
 }
 
 export default function ProductCard({
-  id,
+  _id,
   name,
   score,
   price,
+  img,
 }: IProductCardProps) {
   return (
     <div className={styles.card}>
       <div className={styles.details_container}>
         <img
-          src="https://set-coffee.com/wp-content/uploads/2021/10/041-430x430.png"
+          src={
+            img ||
+            "https://set-coffee.com/wp-content/uploads/2021/10/041-430x430.png"
+          }
           alt=""
         />
         <div className={styles.icons}>
-          <Link href={`/product/${id}`}>
+          <Link href={`/product/${_id}`}>
             <CiSearch />
             <p className={styles.tooltip}>مشاهده سریع</p>
           </Link>
@@ -37,7 +42,7 @@ export default function ProductCard({
       </div>
 
       <div className={styles.details}>
-        <Link href={`/product/${id}`}>{name}</Link>
+        <Link href={`/product/${_id}`}>{name}</Link>
         <div>
           {Array.from({ length: score }).map((_, idx) => (
             <FaStar key={idx} />

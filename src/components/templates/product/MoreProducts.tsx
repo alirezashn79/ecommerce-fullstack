@@ -36,10 +36,11 @@ const MoreProducts = ({
         {relatedProducts.map((product) => (
           <SwiperSlide key={product._id.toString()}>
             <ProductCard
-              id={product._id.toString()}
+              _id={product._id.toString()}
               name={product.name}
               price={product.price}
               score={product.score}
+              img={product.img}
             />
           </SwiperSlide>
         ))}

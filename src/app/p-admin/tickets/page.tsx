@@ -10,6 +10,7 @@ export default async function TicketsPage() {
     .populate("department", "title")
     .populate("subDepartment", "title")
     .populate("answer", "body")
+    .sort({ _id: -1 })
     .lean();
 
   const bannedUsers = await banModel.find({}, "email phone");

@@ -16,7 +16,7 @@ const page = async () => {
 
   const wishes = await wishListModel
     .find({ user: user._id }, "-__v")
-    .populate("product", "name price score")
+    .populate("product", "name price score img")
     .lean();
 
   return (
@@ -29,10 +29,11 @@ const page = async () => {
             wishes?.map((item) => (
               <ProductCard
                 key={item.product._id}
-                id={item.product._id}
+                _id={item.product._id}
                 name={item.product.name}
                 price={item.product.price}
                 score={item.product.score}
+                img={item.product.img}
               />
             ))}
         </section>

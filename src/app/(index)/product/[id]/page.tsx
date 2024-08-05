@@ -23,12 +23,10 @@ const Product = async ({ params }: { params: { id: string } }) => {
     (item) => item.isAccepted
   ).length;
 
-  const relatedProducts = await productModel
-    .find({
-      smell: product.smell,
-      $nor: [{ _id: product._id }],
-    })
-    .exec();
+  const relatedProducts = await productModel.find({
+    smell: product.smell,
+    $nor: [{ _id: product._id }],
+  });
 
   return (
     <div>

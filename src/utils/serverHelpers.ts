@@ -22,10 +22,13 @@ const authUser = async () => {
 
   if (typeof tokenPayload === "object") {
     await connectToDB();
-    const user = await userModel.findOne(
+    const user = (await userModel.findOne(
       { phone: tokenPayload.phone },
       "name role"
-    );
+    )) as {
+      _id: string;
+      role: "ADMIN" | "USER";
+    };
 
     if (!user) {
       return false;

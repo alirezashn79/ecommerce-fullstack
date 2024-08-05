@@ -2,7 +2,17 @@ import ProductCard from "@/components/modules/product-card";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa6";
 import styles from "./latest-products.module.css";
-export default function LatestProducts() {
+
+interface ILatestProductProps {
+  products: {
+    _id: string;
+    name: string;
+    score: number;
+    price: number;
+    img: string;
+  }[];
+}
+export default function LatestProducts({ products }: ILatestProductProps) {
   return (
     <div className={styles.container}>
       <section className={styles.title}>
@@ -15,14 +25,9 @@ export default function LatestProducts() {
         </Link>
       </section>
       <main data-aos="fade-up" className={styles.products}>
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {products.map((item) => (
+          <ProductCard key={item._id} {...item} />
+        ))}
       </main>
     </div>
   );
