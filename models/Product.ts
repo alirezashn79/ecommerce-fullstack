@@ -1,6 +1,6 @@
 import { model, models, Schema, Types } from "mongoose";
 import { ZProductSchema } from "schemas/products";
-import { infer } from "zod";
+import { infer, TypeOf } from "zod";
 import "./Comment";
 
 // interface IProductSchema {
@@ -16,8 +16,9 @@ import "./Comment";
 //   comments: Types.ObjectId[];
 // }
 
-interface IProductSchema extends infer<typeof ZProductSchema> {
+interface IProductSchema extends Omit<TypeOf<typeof ZProductSchema>, "img"> {
   comments: Types.ObjectId[];
+  img: string;
 }
 
 const productSchema = new Schema<IProductSchema>({
@@ -59,6 +60,10 @@ const productSchema = new Schema<IProductSchema>({
   },
   inventory: {
     type: Number,
+    required: true,
+  },
+  img: {
+    type: String,
     required: true,
   },
   comments: {

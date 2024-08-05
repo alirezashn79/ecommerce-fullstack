@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       return Response.json(
         {
           message: "invalid data...!",
-          errorFields: validationResult.error.errors,
+          errorFields: validationResult.error.formErrors.fieldErrors,
         },
         {
           status: 400,

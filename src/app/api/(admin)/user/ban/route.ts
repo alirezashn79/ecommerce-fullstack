@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     if (!validationResult.success) {
       return Response.json({
         message: "invalid data",
-        data: validationResult.error.errors,
+        data: validationResult.error.formErrors.fieldErrors,
       });
     }
 
@@ -89,7 +89,7 @@ export async function PUT(req: Request) {
     if (!validationResult.success) {
       return Response.json({
         message: "invalid data",
-        data: validationResult.error.errors,
+        data: validationResult.error.formErrors.fieldErrors,
       });
     }
 

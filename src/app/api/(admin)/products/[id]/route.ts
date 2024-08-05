@@ -99,7 +99,10 @@ export async function PUT(
 
     if (!validationResult.success)
       return Response.json(
-        { message: "invalid data", error: validationResult.error.errors },
+        {
+          message: "invalid data",
+          error: validationResult.error.formErrors.fieldErrors,
+        },
         {
           status: 422,
         }

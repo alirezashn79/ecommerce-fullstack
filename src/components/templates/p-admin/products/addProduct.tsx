@@ -2,26 +2,25 @@
 
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import client from "configs/client";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { ZProductSchema } from "schemas/products";
 import { TypeOf, z } from "zod";
 import styles from "./add-product.module.css";
-import client from "configs/client";
-import { toast } from "react-toastify";
+import { zClientImageSchema } from "schemas/img";
 
-const zProductSchema = z.object({
-  name: z.string().trim().min(6),
-  price: z.number().positive(),
-  shortDescription: z.string().trim().min(10),
-  longDescription: z.string().trim().min(15),
-  weight: z.number().positive(),
-  suitableFor: z.string().trim().min(4),
-  smell: z.string().trim().min(4),
-  tags: z.string().trim().min(4),
-  inventory: z.number().positive(),
-});
+const productSchema = ZProductSchema.omit({
+  score: true,
+  tags: true,
+})
+  .extend({
+    tags: z.string().trim().min(2),
+  })
+  .and(zClientImageSchema);
 
-type TProduct = TypeOf<typeof zProductSchema>;
+type TProduct = TypeOf<typeof productSchema>;
 
 export default function AddProduct() {
   const { refresh } = useRouter();
@@ -31,15 +30,29 @@ export default function AddProduct() {
     reset,
     handleSubmit,
   } = useForm<TProduct>({
-    resolver: zodResolver(zProductSchema),
+    resolver: zodResolver(productSchema),
   });
 
   const handleAddProduct: SubmitHandler<TProduct> = async (values) => {
     const tags = values.tags.split(" ");
+
     try {
-      const res = await client.post("/products", {
-        ...values,
-        tags,
+      let bodyFormData = new FormData();
+
+      Object.keys(values).map((item) => {
+        if (item === "img") {
+          bodyFormData.append("img", values.img[0]);
+        } else if (item === "tags") {
+          bodyFormData.append("tags", JSON.stringify(tags));
+        } else {
+          bodyFormData.append(item, values[item as keyof TProduct]);
+        }
+      });
+
+      console.log(bodyFormData);
+
+      const res = await client.post("/products", bodyFormData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success(res.data.message);
       reset();
@@ -114,6 +127,12 @@ export default function AddProduct() {
             <label>توضیحات کامل</label>
             <textarea {...register("longDescription")} rows={4} />
             <ErrorMessage errors={errors} name="longDescription" />
+          </div>
+
+          <div>
+            <label>آپلود عکس</label>
+            <input {...register("img")} type="file" />
+            <ErrorMessage errors={errors} name="img" />
           </div>
 
           {/* <div>
