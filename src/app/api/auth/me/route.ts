@@ -1,4 +1,4 @@
-import { verifyAccessToken } from "@/utils/auth";
+import { verifyToken } from "@/utils/auth";
 import connectToDB from "configs/db";
 import userModel from "models/User";
 import { cookies } from "next/headers";
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
   const token = cookieStore.get("token");
 
   if (token) {
-    const tokenPayload = verifyAccessToken(token.value);
+    const tokenPayload = verifyToken(token.value);
     if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();
       user = await userModel.findOne(

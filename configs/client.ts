@@ -12,22 +12,26 @@ client.interceptors.request.use((req) => {
 });
 
 client.interceptors.response.use(
-  (res) => res,
-  (error) => {
-    if (error.response) {
-      // if (error.response.status === 404) {
-      //   toast.error("خطای داخلی");
-      // } else
-      if (error.response.status === 401) {
+  (response) => response, // Directly return successful responses.
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
+      try {
+        const res = await axios.get("/api/auth/refresh");
+        toast.success(res.data.message);
+        return client(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
         toast.error("لاگین نیستید");
         location.replace("/login-register");
-      } else {
-        toast.error(
-          `${error.response.data.message} - code:${error.response.status}`
-        );
+        return Promise.reject(refreshError);
       }
-      return Promise.reject(error);
     }
+    toast.error(
+      `${error.response.data.message} - code:${error.response.status}`
+    );
+    return Promise.reject(error);
   }
 );
 

@@ -1,15 +1,18 @@
 import Table from "components/templates/p-admin/users/table";
 import banModel from "models/Ban";
 import userModel from "models/User";
-import { getUserId } from "utils/serverHelpers";
+import { authUser } from "utils/serverHelpers";
 export default async function UsersPage() {
-  const userId = await getUserId();
+  const user = (await authUser()) as {
+    _id: string;
+    role: "ADMIN" | "USER";
+  };
 
   const users = await userModel.find(
     {
       $nor: [
         {
-          _id: userId,
+          _id: user._id,
         },
       ],
     },
@@ -17,7 +20,7 @@ export default async function UsersPage() {
   );
 
   const bannedUsers = await banModel.find({}, "email phone");
-  const style = {};
+
   return (
     <main>
       {users.length === 0 ? (

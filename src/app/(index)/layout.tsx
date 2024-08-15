@@ -1,6 +1,6 @@
 import Footer from "@/components/modules/footer/Footer";
 import Navbar from "@/components/modules/navbar";
-import { verifyAccessToken } from "@/utils/auth";
+import { verifyToken } from "@/utils/auth";
 import connectToDB from "configs/db";
 import userModel from "models/User";
 import { cookies } from "next/headers";
@@ -19,7 +19,7 @@ export default async function IndexLayout({
   if (token) {
     const tokenValue = token.value;
 
-    const tokenPayload = verifyAccessToken(tokenValue);
+    const tokenPayload = verifyToken(tokenValue);
 
     if (tokenPayload && typeof tokenPayload === "object") {
       await connectToDB();

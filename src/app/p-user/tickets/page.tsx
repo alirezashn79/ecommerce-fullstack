@@ -1,13 +1,19 @@
-import { getUserId } from "@/utils/serverHelpers";
+import { authUser } from "@/utils/serverHelpers";
 import Tickets from "components/templates/p-user/tickets/Tickets";
 
 import ticketModel from "models/Ticket";
 
 export default async function TicketsPage() {
-  const user = await getUserId();
+  const user = (await authUser()) as {
+    _id: string;
+    role: "ADMIN" | "USER";
+  };
 
   const tickets = await ticketModel
-    .find({ user }, "title department subDepartment isAnswered createdAt")
+    .find(
+      { user: user._id },
+      "title department subDepartment isAnswered createdAt"
+    )
     .populate("department", "title")
     .populate("subDepartment", "title")
 

@@ -16,7 +16,7 @@ export function generateAccessToken(data: { phone: string }) {
     { ...data },
     process.env.ACCESS_TOKEN_SECRET_KEY as string,
     {
-      expiresIn: 120,
+      expiresIn: 30,
     }
   );
 
@@ -28,14 +28,14 @@ export function generateRefreshToken(data: { phone: string }) {
     { ...data },
     process.env.REFRESH_TOKEN_SECRET_KEY as string,
     {
-      expiresIn: 240,
+      expiresIn: "1h",
     }
   );
 
   return refreshToken;
 }
 
-export function verifyAccessToken(token: string) {
+export function verifyToken(token: string) {
   try {
     const tokenPayload = verify(
       token,
@@ -43,7 +43,20 @@ export function verifyAccessToken(token: string) {
     );
     return tokenPayload;
   } catch (error) {
-    console.log("verify access token error...!", error);
+    console.log("verify token error...!", error);
+    return false;
+  }
+}
+
+export function verifyRefreshToken(token: string) {
+  try {
+    const tokenPayload = verify(
+      token,
+      process.env.REFRESH_TOKEN_SECRET_KEY as string
+    );
+    return tokenPayload;
+  } catch (error) {
+    console.log("verify refresh token error...!", error);
     return false;
   }
 }

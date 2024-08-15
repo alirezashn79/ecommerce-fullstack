@@ -1,13 +1,16 @@
-import { getUserId } from "@/utils/serverHelpers";
+import { authUser } from "@/utils/serverHelpers";
 import ProductCard from "components/templates/p-user/wishlist/product";
 import wishListModel from "models/Wishlist";
 import styles from "styles/p-user/wishlist.module.css";
 
 const WishlistUserPage = async () => {
-  const userId = await getUserId();
+  const user = (await authUser()) as {
+    _id: string;
+    role: "ADMIN" | "USER";
+  };
 
   const wishes = await wishListModel
-    .find({ user: userId })
+    .find({ user: user._id })
     .populate("product", "name price score")
     .lean();
 

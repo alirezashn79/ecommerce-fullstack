@@ -49,10 +49,22 @@ export async function POST(req: Request) {
       isExpired: true,
     });
 
-    const token = generateAccessToken({ phone: validationResult.data.phone });
+    const accessToken = generateAccessToken({
+      phone: validationResult.data.phone,
+    });
     const refreshToken = generateRefreshToken({
       phone: validationResult.data.phone,
     });
+
+    const headers = new Headers();
+    headers.append(
+      "Set-Cookie",
+      `token=${accessToken};path=/;sameSite=none;httpOnly=true`
+    );
+    headers.append(
+      "Set-Cookie",
+      `refresh-token=${refreshToken};path=/;sameSite=none;httpOnly=true`
+    );
 
     await userModel.create({
       phone: validationResult.data.phone,
@@ -64,9 +76,7 @@ export async function POST(req: Request) {
       { message: "user signed up...!" },
       {
         status: 201,
-        headers: {
-          "Set-Cookie": `token=${token};path=/;httpOnly=true`,
-        },
+        headers,
       }
     );
   } catch (error) {

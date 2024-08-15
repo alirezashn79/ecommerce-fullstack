@@ -46,8 +46,22 @@ export async function POST(req: Request) {
       isExpired: true,
     });
 
-    const token = generateAccessToken({ phone: reqBody.phone });
-    const refreshToken = generateRefreshToken({ phone: reqBody.phone });
+    const accessToken = generateAccessToken({
+      phone: validationResult.data.phone,
+    });
+    const refreshToken = generateRefreshToken({
+      phone: validationResult.data.phone,
+    });
+
+    const headers = new Headers();
+    headers.append(
+      "Set-Cookie",
+      `token=${accessToken};path=/;sameSite=none;httpOnly=true`
+    );
+    headers.append(
+      "Set-Cookie",
+      `refresh-token=${refreshToken};path=/;sameSite=none;httpOnly=true`
+    );
 
     await userModel.findByIdAndUpdate(user._id, {
       refreshToken,
@@ -57,9 +71,7 @@ export async function POST(req: Request) {
       { message: "user signed in...!" },
       {
         status: 200,
-        headers: {
-          "Set-Cookie": `token=${token};path=/;httpOnly=true`,
-        },
+        headers,
       }
     );
   } catch (error) {

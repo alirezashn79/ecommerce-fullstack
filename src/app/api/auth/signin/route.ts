@@ -72,6 +72,16 @@ export async function POST(req: Request) {
     const accessToken = generateAccessToken({ phone: user.phone });
     const refreshToken = generateRefreshToken({ phone: user.phone });
 
+    const headers = new Headers();
+    headers.append(
+      "Set-Cookie",
+      `token=${accessToken};path=/;sameSite=none;httpOnly=true`
+    );
+    headers.append(
+      "Set-Cookie",
+      `refresh-token=${refreshToken};path=/;sameSite=none;httpOnly=true`
+    );
+
     await userModel.findByIdAndUpdate(user._id, {
       refreshToken,
     });
@@ -80,9 +90,7 @@ export async function POST(req: Request) {
       { message: "user signed in successfully" },
       {
         status: 200,
-        headers: {
-          "Set-Cookie": `token=${accessToken};path=/;httpOnly=true`,
-        },
+        headers: headers,
       }
     );
   } catch (error) {

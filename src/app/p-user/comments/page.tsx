@@ -1,14 +1,16 @@
-import { getUserId } from "@/utils/serverHelpers";
+import { authUser } from "@/utils/serverHelpers";
 import DataTable from "components/templates/p-user/comments/data-table";
 import connectToDB from "configs/db";
 import commentModel from "models/Comment";
-import { useRouter } from "next/navigation";
 
 const page = async () => {
   await connectToDB();
-  const user = await getUserId();
+  const user = (await authUser()) as {
+    _id: string;
+    role: "ADMIN" | "USER";
+  };
   const comments = await commentModel
-    .find({ user }, "product date score isAccepted body")
+    .find({ user: user._id }, "product date score isAccepted body")
     .populate("product", "name");
   return (
     <main>
