@@ -9,6 +9,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { userInfoSchema } from "schemas/auth";
 import styles from "styles/p-user/accountDetails.module.css";
 import { InferType } from "yup";
+import swal from "sweetalert";
 
 function AccountDetails() {
   const { replace, refresh } = useRouter();
@@ -39,7 +40,7 @@ function AccountDetails() {
       swal({
         title: "اطلاعات با موفقیت تغییر کرد",
         icon: "success",
-        buttons: "باش",
+        buttons: ["باش"],
       }).then(async (result) => {
         if (result) {
           await client.get("/auth/signout");

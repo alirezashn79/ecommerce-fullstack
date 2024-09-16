@@ -44,7 +44,7 @@ const validateEmail = (email: string | undefined) => {
     .required()
     .isValidSync(email);
 };
-const validatePhone = (phone: number | undefined) => {
+const validatePhone = (phone: string | undefined) => {
   return string()
     .trim()
     .matches(

@@ -3,6 +3,7 @@ import client from "configs/client";
 import { useRouter } from "next/navigation";
 import styles from "./table.module.css";
 import { toast } from "react-toastify";
+import swal from "sweetalert";
 
 interface ITable {
   title: string;

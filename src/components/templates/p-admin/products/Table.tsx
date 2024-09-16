@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import client from "configs/client";
 import { toast } from "react-toastify";
+import swal from "sweetalert";
 
 interface IDiscountProps {
   title: string;

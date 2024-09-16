@@ -19,7 +19,6 @@ export const zServerImageSchema = object({
 export const zClientImageSchema = object({
   img: any()
     .refine((files) => {
-      console.log(files?.[0]?.size <= MAX_FILE_SIZE);
       return files?.[0]?.size <= MAX_FILE_SIZE;
     }, `Max image size is 5MB.`)
     .refine(

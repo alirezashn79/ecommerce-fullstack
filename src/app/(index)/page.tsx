@@ -10,7 +10,6 @@ export default async function Home() {
   const products = await productModel
     .find({}, "name price score img")
     .sort({ _id: -1 });
-  console.log(products);
   return (
     <>
       <Banner />

@@ -51,7 +51,6 @@ const Register: React.FC<IRegister> = ({ showloginForm }) => {
       router.refresh();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
         toast.error(error.response.data.message);
       }
     }

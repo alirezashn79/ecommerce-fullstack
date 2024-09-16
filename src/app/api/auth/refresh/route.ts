@@ -45,17 +45,20 @@ export async function GET() {
 
     const newAccessToken = generateAccessToken({ phone: result.phone });
 
-    const headers = new Headers();
-    headers.append(
-      "Set-Cookie",
-      `token=${newAccessToken};path=/;sameSite=none;httpOnly=true`
-    );
+    const cookieStore = cookies();
+
+    cookieStore.set("token", newAccessToken, {
+      path: "/",
+      sameSite: "strict",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
 
     return Response.json(
       { message: "access token generated successfully" },
       {
         status: 200,
-        headers,
       }
     );
   } catch (error) {

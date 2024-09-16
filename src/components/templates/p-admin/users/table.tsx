@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import styles from "./table.module.css";
 import ModalComponent from "components/modules/react-modal/Modal";
+import swal from "sweetalert";
 
 interface ITable {
   title: string;

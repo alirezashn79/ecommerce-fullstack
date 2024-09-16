@@ -1,9 +1,9 @@
 import axios from "axios";
-import { baseURL } from "./baseUrl";
 import { toast } from "react-toastify";
+import { baseURL } from "./baseUrl";
 
 const client = axios.create({
-  baseURL: baseURL,
+  baseURL,
 });
 
 client.interceptors.request.use((req) => {

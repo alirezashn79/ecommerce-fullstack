@@ -12,7 +12,7 @@ export default function DataTable({ comments, title }: IDataTableProps) {
   const showCommentBody = (commentBody: string) => {
     swal({
       title: commentBody,
-      buttons: "فهمیدم",
+      buttons: ["فهمیدم"],
     });
   };
 

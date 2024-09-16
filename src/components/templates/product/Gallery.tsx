@@ -21,10 +21,12 @@ const Gallery = () => {
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        style={{
-          "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff",
-        }}
+        style={
+          {
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          } as any
+        }
         spaceBetween={10}
         navigation={true}
         modules={[FreeMode, Navigation, Thumbs]}

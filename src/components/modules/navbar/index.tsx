@@ -73,7 +73,6 @@ function Navbar({ isLogin }: INavbarProps) {
           </Link>
           <Link href="/wishlist">
             <FaRegHeart />
-            <span>1</span>
           </Link>
         </div>
       </main>

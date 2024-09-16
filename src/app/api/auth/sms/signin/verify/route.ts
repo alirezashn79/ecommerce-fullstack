@@ -1,6 +1,7 @@
 import connectToDB from "configs/db";
 import otpModel from "models/Otp";
 import userModel from "models/User";
+import { cookies } from "next/headers";
 import { zVerifySchema } from "schemas/otp";
 import { generateAccessToken, generateRefreshToken } from "utils/auth";
 
@@ -53,15 +54,22 @@ export async function POST(req: Request) {
       phone: validationResult.data.phone,
     });
 
-    const headers = new Headers();
-    headers.append(
-      "Set-Cookie",
-      `token=${accessToken};path=/;sameSite=none;httpOnly=true`
-    );
-    headers.append(
-      "Set-Cookie",
-      `refresh-token=${refreshToken};path=/;sameSite=none;httpOnly=true`
-    );
+    const cookieStore = cookies();
+
+    cookieStore.set("token", accessToken, {
+      path: "/",
+      sameSite: "strict",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+    cookieStore.set("refresh-token", refreshToken, {
+      path: "/",
+      sameSite: "strict",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
 
     await userModel.findByIdAndUpdate(user._id, {
       refreshToken,
@@ -71,7 +79,6 @@ export async function POST(req: Request) {
       { message: "user signed in...!" },
       {
         status: 200,
-        headers,
       }
     );
   } catch (error) {

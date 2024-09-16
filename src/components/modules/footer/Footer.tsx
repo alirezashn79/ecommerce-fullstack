@@ -7,7 +7,7 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <footer className={styles.footer}>
-      <main className="container">
+      <main className="container" style={{ color: "wheat" }}>
         <section className={styles.descriptions}>
           <img src="/images/logo_light.png" alt="" />
           <p className={styles.descriptions_title}>
@@ -89,10 +89,10 @@ const Footer = () => {
         </div>
       </main>
       <hr />
-      <div className="container">
+      <div className="container" style={{ color: "wheat" }}>
         <p className={styles.copyRight}>
           {" "}
-          2023
+          2024
           <MdOutlineCopyright /> تمام حقوق متعلق است به <strong>
             قهوه ست
           </strong>{" "}

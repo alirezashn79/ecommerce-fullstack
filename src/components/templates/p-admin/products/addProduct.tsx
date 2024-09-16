@@ -49,8 +49,6 @@ export default function AddProduct() {
         }
       });
 
-      console.log(bodyFormData);
-
       const res = await client.post("/products", bodyFormData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
