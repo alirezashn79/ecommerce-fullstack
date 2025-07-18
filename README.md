@@ -1,6 +1,6 @@
 # 🛒 Coffee Ecommerce Fullstack
 
-A full-stack ecommerce platform for selling coffee and related products, built with **Next.js**, **MongoDB**, and a modern tech stack. This project delivers a seamless shopping experience with user authentication, cart functionality, and interactive UI components.
+A full-stack ecommerce platform for selling coffee and related products, built with **Next.js**, **MongoDB**, and a modern tech stack. This project delivers a seamless shopping experience with user authentication, cart functionality, and interactive UI components
 
 ---
 
